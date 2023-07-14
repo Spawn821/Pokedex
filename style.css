@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+}
+
+.min-h {
+    height: 50vh;
+}
+
+/* #pokemonCard {
+    background-color: purple;
+} */
+
+#pokemonCardText {
+    background-color: white;
+    margin-top: -24px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+#pokemonImg {
+    height: 240px;
+    width: auto;
+    margin-top: -160px;
+}
