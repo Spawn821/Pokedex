@@ -1,9 +1,75 @@
 body {
     margin: 0;
+    font-family: 'Open Sans';
+    display: flex;
+    flex-wrap: wrap;
+    margin: 16px;
 }
+
+
+.pokemonSmallCard {
+    background-color: rgb(122,199,76);
+    border-radius: 16px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    padding: 8px;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.pokemonSmallCardText {
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    gap: 12px;
+    margin-bottom: 36px;
+}
+
+#pokemonSmallCardHeadline {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#pokemonSmallCardSubheadline {
+    padding: 4px;
+    background-color: rgba(255 255 255 / 20%);
+    text-align: center;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+#pokemonSmallCardImg {
+    width: 80px;
+    height: 80px;
+    z-index: 1;
+}
+
+#pokeballSmallCardImg {
+    position: absolute;
+    right: -16px;
+    bottom: -16px; 
+    opacity: 20%;
+    width: 112px;
+    height: 112px;
+    clip: rect(0, 96px, 96px, 0);
+}
+
+
+
+
+
+
+
 
 .min-h {
     height: 50vh;
+}
+
+.d-none {
+    display: none;
 }
 
 /* #pokemonCard {
