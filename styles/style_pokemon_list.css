@@ -1,53 +1,71 @@
 body {
-    margin: 0;
     font-family: 'Open Sans';
     display: flex;
     flex-wrap: wrap;
-    margin: 16px;
+    flex-direction: column;
 }
 
+.pokeballMainPicture {
+    width: 240px;
+    height: 240px;
+    position: absolute;
+    top: -64px;
+    right: 0px;
+    opacity: 20%;
+    object-fit: cover;
+    object-position: 64px;
+}
 
-.pokemonSmallCard {
+.pokemonSmallCardMainContainer {
     background-color: rgb(122,199,76);
     border-radius: 16px;
     display: inline-flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 8px;
     position: relative;
-    padding: 8px;
+    padding: 2px 8px;
     color: white;
-    margin-bottom: 16px;
+    margin: 4px;
+    width: 136px;
+    height: 120px;
 }
 
-.pokemonSmallCardText {
-    display: flex;
-    flex-direction: column;
-    z-index: 1;
-    gap: 12px;
-    margin-bottom: 36px;
-}
-
-#pokemonSmallCardHeadline {
-    font-size: 20px;
+.pokemonSmallCardHeadline {
+    font-size: 16px;
     font-weight: bold;
 }
 
-#pokemonSmallCardSubheadline {
-    padding: 4px;
+.pokemonSmallCardSubContainer {
+    display: flex;
+    align-items: flex-start;
+    z-index: 1;
+    gap: 4px;
+}
+
+.pokemonSmallCardSubheadline {
+    padding: 4px 12px;
     background-color: rgba(255 255 255 / 20%);
     text-align: center;
-    border-radius: 12px;
-    font-size: 14px;
+    border-radius: 16px;
+    font-size: 12px;
 }
 
-#pokemonSmallCardImg {
-    width: 80px;
-    height: 80px;
+.pokemonSmallCardSubContainerLeftArea {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pokemonSmallCardPokemonImg {
+    width: 64px;
+    height: 64px;
     z-index: 1;
+    object-fit: contain;
 }
 
-#pokeballSmallCardImg {
+.pokemonSmallCardPokeballImg {
     position: absolute;
     right: -16px;
     bottom: -16px; 
