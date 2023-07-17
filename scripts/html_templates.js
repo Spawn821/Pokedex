@@ -7,7 +7,7 @@ function getHTMLPokemonList(currentPokemon, currentPokemonSpecies, i) {
         <div class="pokemonSmallCardMainContainer" id="backroundColor${i}">
             <span class="pokemonSmallCardHeadline">${pokemonName}</span>
             <div class="pokemonSmallCardSubContainer">
-                <div class="pokemonSmallCardSubContainerLeftArea" id="eggGroupList${i}">
+                <div class="pokemonSmallCardSubContainerLeftArea" id="pokemonTypeList${i}">
                 </div>
                 <img class="pokemonSmallCardPokemonImg"
                     src="${pokemonImg}">

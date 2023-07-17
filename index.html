@@ -18,7 +18,15 @@
 
 <body onload="infoAPIContent(); renderPokemonList()">
 
-    <input type="text" placeholder="Search Pokemon">
+    <!-- search pokemon name -->
+    <input type="text" placeholder="Search Pokemon" id="searchPokemonName" onchange="renderPokemonList()">
+
+    <!-- filter to pokemon number -->
+    <form action="">
+        <input type="number" placeholder="From">
+        <input type="number" placeholder="To">
+        <button>Make it</button>
+    </form>
 
     <h1>Pokedex</h1>
 
