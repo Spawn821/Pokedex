@@ -7,7 +7,7 @@
     <title>Pokedex</title>
 
     <!-- import styles -->
-    <link rel="stylesheet" href="./styles/style_pokemon_list.css">
+    <link rel="stylesheet" href="./style_pokemon_list.css">
     <link rel="stylesheet" href="./fonts.css">
 
     <!-- import scripts -->
@@ -16,23 +16,52 @@
     <script src="./scripts/style_templates.js"></script>
 </head>
 
-<body onload="infoAPIContent(); renderPokemonList()">
+<body onload="infoAPIContent(); renderPokemonList()" onclick="closeMenuFilterPokemon()">
 
-    <!-- search pokemon name -->
-    <input type="text" placeholder="Search Pokemon" id="searchPokemonName" onchange="renderPokemonList()">
+    <!-- main picture -->
+    <img class="mainPicturePokeball" src="./img/pokeball.png" alt="">
+    <div class="mainPictureMenu" onclick="showMenuFilterPokemon(); notToClose(event)" id="mainPictureMenu">
+        <div class="mainPictureMenuLine"></div>
+        <div class="mainPictureMenuLine"></div>
+        <div class="mainPictureMenuLine"></div>
+    </div>
 
-    <!-- filter to pokemon number -->
-    <form action="">
-        <input type="number" placeholder="From">
-        <input type="number" placeholder="To">
-        <button>Make it</button>
-    </form>
+    <!-- menu filter pokemons -->
+    <div class="menuFilterPokemon d-none" id="menuFilterPokemon">
+        <span class="menuFilterPokemonHeadline">Filter Pokemons</span>
+        <div class="menuFilterPokemonSubContainer">
+            <label for="">Enter a name or <br> single letters:</label>
+            <input type="text" placeholder="..." id="searchPokemonName">
+        </div>
+        <div class="menuFilterPokemonSubContainer">
+            <label for="">Enter a number range:</label>
+            <div class="pokemonNumberRange">
+                <input type="number" placeholder="...">
+                <input type="number" placeholder="...">
+            </div>
+        </div>
+        <div class="menuFilterPokemonSubContainer">
+            <label for="">Choose a type:</label>
+            <select name="Type" id="">
+                <option value="" disabled selected hidden>...</option>
+                <option value="Flying">Flying</option>
+                <option value="Fight">Fight</option>
+            </select>
+        </div>
+        <div class="menuFilterPokemonSubContainer">
+            <label for="">Choose a element:</label>
+            <select name="Element" id="">
+                <option value="" disabled selected hidden>...</option>
+                <option value="Water">Water</option>
+                <option value="Electric">Electric</option>
+            </select>
+        </div>
+    </div>
 
+    <!-- headline -->
     <h1>Pokedex</h1>
 
-    <img class="pokeballMainPicture" src="./img/pokeball.png" alt="">
-
-    <!-- pokemonList -->
+    <!-- pokemon list -->
     <div id="pokemonList">
     </div>
 

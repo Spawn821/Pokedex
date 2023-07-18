@@ -102,6 +102,22 @@ function renderPokemonTypesList(currentPokemon, i) {
 }
 
 
+function showMenuFilterPokemon() {
+    document.getElementById('menuFilterPokemon').classList.remove('d-none');
+    document.getElementById('mainPictureMenu').classList.add('trans-90deg');
+}
+
+
+function closeMenuFilterPokemon() {
+    document.getElementById('menuFilterPokemon').classList.add('d-none');
+    document.getElementById('mainPictureMenu').classList.remove('trans-90deg');
+}
+
+function notToClose(event) {
+    event.stopPropagation();
+}
+
+
 async function returnJSON(api) {
     let url = api;
     let response = await fetch(url);
