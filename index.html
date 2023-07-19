@@ -20,49 +20,49 @@
 
     <!-- main picture -->
     <img class="mainPicturePokeball" src="./img/pokeball.png" alt="">
-    <div class="mainPictureMenu" onclick="showMenuFilterPokemon(); notToClose(event)" id="mainPictureMenu">
+    <div class="mainPictureMenu trans-180deg" onclick="showMenuFilterPokemon(); notToClose(event)" id="mainPictureMenu">
         <div class="mainPictureMenuLine"></div>
         <div class="mainPictureMenuLine"></div>
         <div class="mainPictureMenuLine"></div>
     </div>
 
     <!-- menu filter pokemons -->
-    <div class="menuFilterPokemon d-none" id="menuFilterPokemon">
+    <div class="menuFilterPokemon d-none" onclick="notToClose(event)" id="menuFilterPokemon">
         <span class="menuFilterPokemonHeadline">Filter Pokemons</span>
         <div class="menuFilterPokemonSubContainer">
-            <label for="">Enter a name or <br> single letters:</label>
+            <label>Enter a name or <br> single letters:</label>
             <input type="text" placeholder="..." id="searchPokemonName">
         </div>
         <div class="menuFilterPokemonSubContainer">
-            <label for="">Enter a number range:</label>
+            <label>Enter a number range:</label>
             <div class="pokemonNumberRange">
-                <input type="number" placeholder="...">
-                <input type="number" placeholder="...">
+                <input type="number" min="1" placeholder="..." id="pokemonNumberRangeFrom">
+                <input type="number" placeholder="..." id="pokemonNumberRangeTo">
             </div>
         </div>
         <div class="menuFilterPokemonSubContainer">
-            <label for="">Choose a type:</label>
-            <select name="Type" id="">
+            <label>Choose a type:</label>
+            <select name="Type" id="pokemonType">
                 <option value="" disabled selected hidden>...</option>
-                <option value="Flying">Flying</option>
-                <option value="Fight">Fight</option>
-            </select>
-        </div>
-        <div class="menuFilterPokemonSubContainer">
-            <label for="">Choose a element:</label>
-            <select name="Element" id="">
-                <option value="" disabled selected hidden>...</option>
-                <option value="Water">Water</option>
-                <option value="Electric">Electric</option>
             </select>
         </div>
     </div>
 
     <!-- headline -->
-    <h1>Pokedex</h1>
+    <div class="headline">
+        <h1>Pokedex</h1>
+        <div class="headlineBigLine"></div>
+        <div class="headlineSmallLine"></div>
+    </div>
 
     <!-- pokemon list -->
     <div id="pokemonList">
+    </div>
+
+    <!-- page navigation -->
+    <div class="pageNavigation">
+        <span class="pageNavigationArrow" onclick="lastPage()"><</span>
+        <span class="pageNavigationArrow" onclick="nextPage()">></span>
     </div>
 
     <!--     <section class="min-h d-none" id="pokemonCard"></section>

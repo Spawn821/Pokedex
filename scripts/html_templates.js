@@ -1,4 +1,4 @@
-function getHTMLPokemonList(currentPokemon, currentPokemonSpecies, i) {
+function getHTMLPokemonList(currentPokemon, i) {
     let pokemonName = returnFirstLetterToUpperCase(currentPokemon['name']);
     let pokemonImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
     let pokeball = './img/pokeball.png';
@@ -21,5 +21,12 @@ function getHTMLPokemonList(currentPokemon, currentPokemonSpecies, i) {
 function getHTMLTypesList(currentPokemonType) {
     return /*html*/`
         <span class="pokemonSmallCardSubheadline">${currentPokemonType}</span>
+    `;
+}
+
+
+function getHTMLPokemonFilerType(currentPokemonType) {
+    return /*html*/`
+        <option value="${currentPokemonType}">${currentPokemonType}</option> 
     `;
 }
