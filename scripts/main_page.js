@@ -5,6 +5,9 @@ let APIS = [
 
 let currentPage = APIS[0];
 
+let pageNumber = 1;
+let pageNumberMax = 10;
+
 let pokemonSpeciesColors = [
     {
         'name': 'black',
@@ -50,7 +53,7 @@ let pokemonSpeciesColors = [
 
 
 async function infoAPIContent() {
-    let pokemon = await returnJSON('https://pokeapi.co/api/v2/pokemon/');
+    let pokemon = await returnJSON('https://pokeapi.co/api/v2/pokemon/1/');
     let pokemonSpecies = await returnJSON('https://pokeapi.co/api/v2/pokemon-species/10/');
     let color = await returnJSON('https://pokeapi.co/api/v2/pokemon-color/');
     let form = await returnJSON('https://pokeapi.co/api/v2/pokemon-form/1/');
@@ -70,6 +73,8 @@ async function infoAPIContent() {
 
 
 async function renderPokemonList() {
+    renderPokemonFilterType();
+
     const pokemon = await returnJSON(currentPage);
     let contentPokemonList = document.getElementById('pokemonList');
     contentPokemonList.innerHTML = '';
@@ -80,6 +85,7 @@ async function renderPokemonList() {
     for (let i = 0; i < pokemon['results'].length; i++) {
         const currentPokemon = await returnJSON(pokemon['results'][i]['url']);
         const currentPokemonSpecies = await returnJSON(currentPokemon['species']['url']);
+        const currentPokemonTypes = currentPokemon['types'];
 
         contentPokemonList.innerHTML += getHTMLPokemonList(currentPokemon, i);
 
@@ -88,8 +94,59 @@ async function renderPokemonList() {
 
         renderPokemonTypesList(currentPokemon, i);
     }
+}
 
-    renderPokemonFilterType();
+
+async function renderPokemonListWithFilter() {
+    document.getElementById('pageNavigation').classList.add('d-none');
+
+    currentPage = APIS[0];
+    let contentPokemonList = document.getElementById('pokemonList');
+    contentPokemonList.innerHTML = '';
+    let number = 0;
+
+    let searchPokemonName = document.getElementById('searchPokemonName').value;
+    searchPokemonName = searchPokemonName.toLowerCase();
+    let searchPokemonType = document.getElementById('searchPokemonType').value;
+    searchPokemonType = searchPokemonType.toLowerCase();
+
+    try {
+        for (let k = 1; k < 10; k++) {
+            const pokemon = await returnJSON(currentPage);
+            currentPage = pokemon['next'];
+            console.log(currentPage);
+
+            for (let i = 0; i < pokemon['results'].length; i++) {
+                const currentPokemon = await returnJSON(pokemon['results'][i]['url']);
+                const currentPokemonSpecies = await returnJSON(currentPokemon['species']['url']);
+
+                if (currentPokemon['name'].toLowerCase().includes(searchPokemonName)) {
+
+                    for (let j = 0; j < currentPokemon['types'].length; j++) {
+                        console.log(currentPokemon['types'].length);
+                        const currentPokemonType = currentPokemon['types'][j]['type']['name'];
+
+                        if (currentPokemonType.toLowerCase().includes(searchPokemonType)) {
+                            contentPokemonList.innerHTML += getHTMLPokemonList(currentPokemon, number);
+
+                            const currentPokemonColor = findRGBColor(currentPokemonSpecies['color']['name']);
+                            document.getElementById(`backroundColor${number}`).style = getStylePokemonSmallCard(currentPokemonColor);
+
+                            renderPokemonTypesList(currentPokemon, number);
+
+                            console.log(currentPokemon['name'] + number);
+                            break;
+                        }
+                    }
+                }
+
+                number++;
+            }
+        }
+
+    } catch {
+        alert('Page not found!')
+    }
 }
 
 
@@ -107,7 +164,7 @@ function renderPokemonTypesList(currentPokemon, i) {
 
 async function renderPokemonFilterType() {
     const pokemonType = await returnJSON(APIS[1]);
-    let contentPokemonFilterType = document.getElementById('pokemonType');
+    let contentPokemonFilterType = document.getElementById('searchPokemonType');
     contentPokemonFilterType.innerHTML = `<option value="" disabled selected hidden>...</option>`;
 
     for (let i = 0; i < pokemonType['results'].length; i++) {
@@ -133,19 +190,19 @@ function closeMenuFilterPokemon() {
 
 
 async function nextPage() {
-
     if (currentPage == null) {
         currentPage = APIS[0];
     }
 
     let showJSON = await returnJSON(currentPage);
     currentPage = showJSON['next'];
+    pageNumber++;
 
     renderPokemonList();
+    document.getElementById('pageNavigationPageNumber').value = pageNumber;
 }
 
 async function lastPage() {
-
     if (currentPage != null) {
         let showJSON = await returnJSON(currentPage);
         currentPage = showJSON['previous'];
@@ -153,7 +210,33 @@ async function lastPage() {
 
     if (currentPage != null) {
         renderPokemonList();
+        pageNumber--;
+        document.getElementById('pageNavigationPageNumber').value = pageNumber;
     }
+}
+
+
+async function showPage() {
+    let currentPageNumber = document.getElementById('pageNavigationPageNumber').value;
+
+    currentPage = APIS[0];
+
+    try {
+        for (let i = 1; i < currentPageNumber; i++) {
+            const nextPage = await returnJSON(currentPage);
+            currentPage = nextPage['next'];
+            pageNumber = i + 1;
+        }
+
+        renderPokemonList();
+    } catch {
+        alert('Page not found!')
+    }
+}
+
+
+function test() {
+    console.log(document.getElementById('pokemonType').value)
 }
 
 

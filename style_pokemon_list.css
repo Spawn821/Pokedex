@@ -1,5 +1,6 @@
 body {
     font-family: 'Open Sans';
+    min-height: 100vh;
 }
 
 
@@ -57,7 +58,6 @@ body {
 
 /* menu filter pokemons */
 .menuFilterPokemon {
-    height: 240px;
     background-color: white;
     position: absolute;
     top: 96px;
@@ -111,10 +111,19 @@ body {
     width: 128px;
 }
 
+.menuFilterPokemonButton {
+    background-color: rgba(0 0 0 / 10%);
+    border: 1px solid rgba(0 0 0 / 10%);
+    border-radius: 16px;
+    font-size: 16px;
+    margin-top: 8px;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
 
 
 /* headline */
-
 .headline {
     position: relative;
 }
@@ -138,7 +147,7 @@ h1 {
 .headlineSmallLine {
     position: absolute;
     top: 74.5px;
-    left: 8px;
+    left: 16px;
     right: 8px;
     height: 8px;
     background-color: rgba(0 0 0 / 10%);
@@ -220,7 +229,7 @@ h1 {
 .pageNavigation {
     display: flex;
     justify-content: center;
-    gap: 320px;
+    gap: 160px;
     margin-top: 40px;
     margin-bottom: 40px;
 }
@@ -236,6 +245,38 @@ h1 {
     width: 48px;
     border-radius: 50%;
     cursor: pointer;
+}
+
+.pageNavigationPageNumberArea {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(0 0 0 / 10%);
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 32px;
+}
+
+.pageNavigationPageNumberSuffix {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.pageNavigationPageNumber {
+    font-size: 16px;
+    font-weight: bold;
+    height: 20px;
+    width: 40px;
+    text-align: center;
+    border-radius: 16px;
+    border: 2px solid rgba(0 0 0 / 20%);
+    outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 
