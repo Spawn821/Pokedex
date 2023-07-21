@@ -16,7 +16,7 @@
     <script src="./scripts/style_templates.js"></script>
 </head>
 
-<body onload="infoAPIContent(); renderPokemonList()" onclick="closeMenuFilterPokemon()">
+<body onload="init()" onclick="closeMenuFilterPokemon()">
 
     <!-- main picture -->
     <img class="mainPicturePokeball" src="./img/pokeball.png" alt="">
@@ -31,13 +31,18 @@
         <span class="menuFilterPokemonHeadline">Filter Pokemons</span>
         <div class="menuFilterPokemonSubContainer">
             <label>Enter a name or <br> single letters:</label>
-            <input type="text" placeholder="..." id="searchPokemonName">
+            <div class="menuFilterPokemonSubContainerArea">
+                <input type="text" placeholder="..." id="searchPokemonName">
+                <span id="searchPokemonNameCheck"></span>
+            </div>
         </div>
         <div class="menuFilterPokemonSubContainer">
             <label>Choose a type:</label>
-            <select id="searchPokemonType">
-                <option value="" disabled selected hidden>...</option>
-            </select>
+            <div class="menuFilterPokemonSubContainerArea">
+                <select id="searchPokemonType">
+                </select>
+                <span id="searchPokemonTypeCheck"></span>
+            </div>
         </div>
         <div>
             <button class="menuFilterPokemonButton" onclick="renderPokemonListWithFilter()">Search</button>

@@ -3,10 +3,13 @@ let APIS = [
     'https://pokeapi.co/api/v2/type/'
 ];
 
-let currentPage = APIS[0];
+let currentPage = '';
 
 let pageNumber = 1;
 let pageNumberMax = 10;
+
+let checkFilterName;
+let checkFilterType;
 
 let pokemonSpeciesColors = [
     {
@@ -72,20 +75,23 @@ async function infoAPIContent() {
 }
 
 
-async function renderPokemonList() {
+function init() {
+    infoAPIContent();
+    resetPage();
+    renderPokemonList();
     renderPokemonFilterType();
+}
+
+
+async function renderPokemonList() {
 
     const pokemon = await returnJSON(currentPage);
     let contentPokemonList = document.getElementById('pokemonList');
     contentPokemonList.innerHTML = '';
 
-    let searchPokemonName = document.getElementById('searchPokemonName').value;
-    searchPokemonName = searchPokemonName.toLowerCase();
-
     for (let i = 0; i < pokemon['results'].length; i++) {
         const currentPokemon = await returnJSON(pokemon['results'][i]['url']);
         const currentPokemonSpecies = await returnJSON(currentPokemon['species']['url']);
-        const currentPokemonTypes = currentPokemon['types'];
 
         contentPokemonList.innerHTML += getHTMLPokemonList(currentPokemon, i);
 
@@ -93,59 +99,6 @@ async function renderPokemonList() {
         document.getElementById(`backroundColor${i}`).style = getStylePokemonSmallCard(currentPokemonColor);
 
         renderPokemonTypesList(currentPokemon, i);
-    }
-}
-
-
-async function renderPokemonListWithFilter() {
-    document.getElementById('pageNavigation').classList.add('d-none');
-
-    currentPage = APIS[0];
-    let contentPokemonList = document.getElementById('pokemonList');
-    contentPokemonList.innerHTML = '';
-    let number = 0;
-
-    let searchPokemonName = document.getElementById('searchPokemonName').value;
-    searchPokemonName = searchPokemonName.toLowerCase();
-    let searchPokemonType = document.getElementById('searchPokemonType').value;
-    searchPokemonType = searchPokemonType.toLowerCase();
-
-    try {
-        for (let k = 1; k < 10; k++) {
-            const pokemon = await returnJSON(currentPage);
-            currentPage = pokemon['next'];
-            console.log(currentPage);
-
-            for (let i = 0; i < pokemon['results'].length; i++) {
-                const currentPokemon = await returnJSON(pokemon['results'][i]['url']);
-                const currentPokemonSpecies = await returnJSON(currentPokemon['species']['url']);
-
-                if (currentPokemon['name'].toLowerCase().includes(searchPokemonName)) {
-
-                    for (let j = 0; j < currentPokemon['types'].length; j++) {
-                        console.log(currentPokemon['types'].length);
-                        const currentPokemonType = currentPokemon['types'][j]['type']['name'];
-
-                        if (currentPokemonType.toLowerCase().includes(searchPokemonType)) {
-                            contentPokemonList.innerHTML += getHTMLPokemonList(currentPokemon, number);
-
-                            const currentPokemonColor = findRGBColor(currentPokemonSpecies['color']['name']);
-                            document.getElementById(`backroundColor${number}`).style = getStylePokemonSmallCard(currentPokemonColor);
-
-                            renderPokemonTypesList(currentPokemon, number);
-
-                            console.log(currentPokemon['name'] + number);
-                            break;
-                        }
-                    }
-                }
-
-                number++;
-            }
-        }
-
-    } catch {
-        alert('Page not found!')
     }
 }
 
@@ -162,16 +115,99 @@ function renderPokemonTypesList(currentPokemon, i) {
     }
 }
 
+
 async function renderPokemonFilterType() {
     const pokemonType = await returnJSON(APIS[1]);
     let contentPokemonFilterType = document.getElementById('searchPokemonType');
-    contentPokemonFilterType.innerHTML = `<option value="" disabled selected hidden>...</option>`;
+    contentPokemonFilterType.innerHTML = `<option value="">...</option>`;
 
     for (let i = 0; i < pokemonType['results'].length; i++) {
         const currentPokemonType = pokemonType['results'][i]['name'];
 
         contentPokemonFilterType.innerHTML += getHTMLPokemonFilerType(currentPokemonType);
     }
+}
+
+
+async function renderPokemonListWithFilter() {
+    hidePageNavigation();
+    resetPage();
+    clearPokemonFilterResult();
+
+    let contentPokemonList = document.getElementById('pokemonList');
+    contentPokemonList.innerHTML = '';
+
+    let searchPokemonName = document.getElementById('searchPokemonName').value;
+    searchPokemonName = searchPokemonName.toLowerCase();
+    let searchPokemonType = document.getElementById('searchPokemonType').value;
+    searchPokemonType = searchPokemonType.toLowerCase();
+
+    let pokemonNumber = 0;
+
+    for (let k = 1; k < pageNumberMax; k++) {
+        const pokemon = await returnJSON(currentPage);
+        currentPage = pokemon['next'];
+
+        for (let i = 0; i < pokemon['results'].length; i++) {
+            const currentPokemon = await returnJSON(pokemon['results'][i]['url']);
+            const currentPokemonSpecies = await returnJSON(currentPokemon['species']['url']);
+
+            if (currentPokemon['name'].toLowerCase().includes(searchPokemonName)) {
+
+                for (let j = 0; j < currentPokemon['types'].length; j++) {
+                    const currentPokemonType = currentPokemon['types'][j]['type']['name'];
+
+                    if (currentPokemonType.toLowerCase().includes(searchPokemonType)) {
+                        contentPokemonList.innerHTML += getHTMLPokemonList(currentPokemon, pokemonNumber);
+
+                        const currentPokemonColor = findRGBColor(currentPokemonSpecies['color']['name']);
+                        document.getElementById(`backroundColor${pokemonNumber}`).style = getStylePokemonSmallCard(currentPokemonColor);
+
+                        renderPokemonTypesList(currentPokemon, pokemonNumber);
+
+                        break;
+                    }
+                }
+            }
+
+            pokemonNumber++;
+        }
+    }
+
+    checkPokemonFilterResult(contentPokemonList);
+}
+
+
+function clearPokemonFilterResult() {
+    checkFilterName = document.getElementById('searchPokemonNameCheck');
+    checkFilterName.innerHTML = '';
+    checkFilterType = document.getElementById('searchPokemonTypeCheck');
+    checkFilterType.innerHTML = '';
+}
+
+
+function checkPokemonFilterResult(contentPokemonList) {
+    if (contentPokemonList.innerHTML == '') {
+        if (searchPokemonName.value != '') {
+            setFilterResults(checkFilterName, '&#215', 'red')
+        }
+        if (searchPokemonType.value != '') {
+            setFilterResults(checkFilterType, '&#215', 'red')
+        }
+    } else {
+        if (searchPokemonName.value != '') {
+            setFilterResults(checkFilterName, '&#10003', 'green')
+        }
+        if (searchPokemonType.value != '') {
+            setFilterResults(checkFilterType, '&#10003', 'green')
+        }
+    }
+}
+
+
+function setFilterResults(varibale, sign, color) {
+    varibale.innerHTML = sign;
+    varibale.style = /*html*/`color: ${color}`;
 }
 
 
@@ -190,19 +226,25 @@ function closeMenuFilterPokemon() {
 
 
 async function nextPage() {
-    if (currentPage == null) {
-        currentPage = APIS[0];
+    document.getElementById('pageNavigationPageNumber').style = 'color: black';
+
+    if (pageNumber < pageNumberMax) {
+        if (currentPage == null) {
+            currentPage = APIS[0];
+        }
+
+        let showJSON = await returnJSON(currentPage);
+        currentPage = showJSON['next'];
+        pageNumber++;
+
+        renderPokemonList();
+        document.getElementById('pageNavigationPageNumber').value = pageNumber;
     }
-
-    let showJSON = await returnJSON(currentPage);
-    currentPage = showJSON['next'];
-    pageNumber++;
-
-    renderPokemonList();
-    document.getElementById('pageNavigationPageNumber').value = pageNumber;
 }
 
 async function lastPage() {
+    document.getElementById('pageNavigationPageNumber').style = 'color: black';
+
     if (currentPage != null) {
         let showJSON = await returnJSON(currentPage);
         currentPage = showJSON['previous'];
@@ -217,26 +259,28 @@ async function lastPage() {
 
 
 async function showPage() {
+    document.getElementById('pageNavigationPageNumber').style = 'color: black';
     let currentPageNumber = document.getElementById('pageNavigationPageNumber').value;
 
-    currentPage = APIS[0];
+    if (currentPageNumber <= pageNumberMax) {
 
-    try {
-        for (let i = 1; i < currentPageNumber; i++) {
-            const nextPage = await returnJSON(currentPage);
-            currentPage = nextPage['next'];
-            pageNumber = i + 1;
+        currentPage = APIS[0];
+
+        try {
+            for (let i = 1; i < currentPageNumber; i++) {
+                const nextPage = await returnJSON(currentPage);
+                currentPage = nextPage['next'];
+                pageNumber = i + 1;
+            }
+
+            renderPokemonList();
+        } catch {
+            alert('Page not found!')
         }
-
-        renderPokemonList();
-    } catch {
-        alert('Page not found!')
+    } else {
+        document.getElementById('pageNavigationPageNumber').value = pageNumber;
+        document.getElementById('pageNavigationPageNumber').style = 'color: red';
     }
-}
-
-
-function test() {
-    console.log(document.getElementById('pokemonType').value)
 }
 
 
@@ -267,4 +311,13 @@ function findRGBColor(color) {
 
 function returnFirstLetterToUpperCase(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+
+function resetPage() {
+    currentPage = APIS[0];
+}
+
+function hidePageNavigation() {
+    document.getElementById('pageNavigation').classList.add('d-none');
 }

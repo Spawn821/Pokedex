@@ -21,6 +21,10 @@ body {
     transform: rotate(180deg);
 }
 
+input {
+    font-family: 'Open Sans';
+}
+
 
 
 /* main picture */
@@ -81,6 +85,14 @@ body {
 .menuFilterPokemonSubContainer {
     display: flex;
     flex-direction: column;
+}
+
+.menuFilterPokemonSubContainerArea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 24px;
 }
 
 .pokemonNumberRange {
