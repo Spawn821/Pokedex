@@ -1,0 +1,35 @@
+/* pokemon card */
+.min-h {
+    height: 50vh;
+}
+
+#pokemonCard {
+    background-color: rgb(122,199,76);
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+}
+
+.pokemonCardCloseSign {
+    text-align: center;
+    font-size: 40px;
+    height: 56px;
+    width: 56px;
+    background-color: rgba(0 0 0 / 20%);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#pokemonCardText {
+    background-color: white;
+    margin-top: -24px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+#pokemonImg {
+    height: 240px;
+    width: auto;
+    margin-top: -160px;
+}

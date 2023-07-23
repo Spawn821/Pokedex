@@ -4,7 +4,7 @@ function getHTMLPokemonList(currentPokemon, i) {
     let pokeball = './img/pokeball.png';
 
     return /*html*/`
-        <div class="pokemonSmallCardMainContainer" id="backroundColor${i}">
+        <div class="pokemonSmallCardMainContainer" id="backroundColor${i}" onclick="openPokemonCard(${i + 1})">
             <span class="pokemonSmallCardHeadline">${pokemonName}</span>
             <div class="pokemonSmallCardSubContainer">
                 <div class="pokemonSmallCardSubContainerLeftArea" id="pokemonTypeList${i}">
@@ -14,6 +14,13 @@ function getHTMLPokemonList(currentPokemon, i) {
             </div>
             <img class="pokemonSmallCardPokeballImg" src="${pokeball}">
         </div>
+    `;
+}
+
+
+function getStylePokemonSmallCard(color) {
+    return /*html*/`
+        background-color: ${color}
     `;
 }
 
@@ -29,4 +36,15 @@ function getHTMLPokemonFilerType(currentPokemonType) {
     return /*html*/`
         <option value="${currentPokemonType}">${currentPokemonType}</option> 
     `;
+}
+
+
+function setFilterResults(id, sign, color) {
+    document.getElementById(id).innerHTML = sign;
+    document.getElementById(id).style = /*html*/`color: ${color}`;
+}
+
+
+function setStylePageNumber(color) {
+    document.getElementById('pageNavigationPageNumber').style = /*html*/`color: ${color}`;
 }

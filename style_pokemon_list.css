@@ -1,6 +1,6 @@
 body {
     font-family: 'Open Sans';
-    min-height: 100vh;
+    margin: 0;
 }
 
 
@@ -23,6 +23,25 @@ body {
 
 input {
     font-family: 'Open Sans';
+}
+
+
+/* loading screen */
+#loadingScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0 0 0 / 40%);
+    z-index: 3;
+}
+
+
+/* panel */
+.panel {
+    min-height: 100vh;
+    margin: 8px;
 }
 
 
@@ -176,7 +195,6 @@ h1 {
 }
 
 .pokemonSmallCardMainContainer {
-    background-color: rgb(122, 199, 76);
     border-radius: 16px;
     display: inline-flex;
     flex-direction: column;
@@ -189,6 +207,11 @@ h1 {
     margin: 4px;
     width: 136px;
     height: 120px;
+}
+
+.pokemonSmallCardMainContainer:hover {
+    opacity: 80%;
+    transform: scale(1.05);
 }
 
 .pokemonSmallCardHeadline {
@@ -289,32 +312,4 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-/* #pokemonCard {
-    background-color: purple;
-} */
-
-#pokemonCardText {
-    background-color: white;
-    margin-top: -24px;
-    border-radius: 16px;
-    display: flex;
-    justify-content: center;
-}
-
-#pokemonImg {
-    height: 240px;
-    width: auto;
-    margin-top: -160px;
 }

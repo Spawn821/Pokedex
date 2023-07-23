@@ -8,75 +8,90 @@
 
     <!-- import styles -->
     <link rel="stylesheet" href="./style_pokemon_list.css">
+    <link rel="stylesheet" href="./style_pokemon_card.css">
     <link rel="stylesheet" href="./fonts.css">
 
     <!-- import scripts -->
-    <script src="./scripts/main_page.js"></script>
+    <script src="./scripts/pokemon_list.js"></script>
+    <script src="./scripts/pokemon_card.js"></script>
+    <script src="./scripts/help_functions.js"></script>
     <script src="./scripts/html_templates.js"></script>
-    <script src="./scripts/style_templates.js"></script>
 </head>
 
-<body onload="init()" onclick="closeMenuFilterPokemon()">
+<body onload="init()">
 
-    <!-- main picture -->
-    <img class="mainPicturePokeball" src="./img/pokeball.png" alt="">
-    <div class="mainPictureMenu trans-180deg" onclick="showMenuFilterPokemon(); notToClose(event)" id="mainPictureMenu">
-        <div class="mainPictureMenuLine"></div>
-        <div class="mainPictureMenuLine"></div>
-        <div class="mainPictureMenuLine"></div>
-    </div>
+    <!-- loading screen -->
+    <div class="d-none" id="loadingScreen"></div>
 
-    <!-- menu filter pokemons -->
-    <div class="menuFilterPokemon d-none" onclick="notToClose(event)" id="menuFilterPokemon">
-        <span class="menuFilterPokemonHeadline">Filter Pokemons</span>
-        <div class="menuFilterPokemonSubContainer">
-            <label>Enter a name or <br> single letters:</label>
-            <div class="menuFilterPokemonSubContainerArea">
-                <input type="text" placeholder="..." id="searchPokemonName">
-                <span id="searchPokemonNameCheck"></span>
+    <!-- panel -->
+    <div class="panel" onclick="closeMenuFilterPokemon()" id="panel">
+
+        <!-- main picture -->
+        <img class="mainPicturePokeball" src="./img/pokeball.png" alt="">
+        <div class="mainPictureMenu trans-180deg" onclick="showMenuFilterPokemon(); notToClose(event)"
+            id="mainPictureMenu">
+            <div class="mainPictureMenuLine"></div>
+            <div class="mainPictureMenuLine"></div>
+            <div class="mainPictureMenuLine"></div>
+        </div>
+
+        <!-- menu filter pokemons -->
+        <div class="menuFilterPokemon d-none" onclick="notToClose(event)" id="menuFilterPokemon">
+            <span class="menuFilterPokemonHeadline">Filter Pokemons</span>
+            <div class="menuFilterPokemonSubContainer">
+                <label>Enter a name or <br> single letters:</label>
+                <div class="menuFilterPokemonSubContainerArea">
+                    <input type="text" placeholder="..." id="searchPokemonName">
+                    <span id="searchPokemonNameCheck"></span>
+                </div>
+            </div>
+            <div class="menuFilterPokemonSubContainer">
+                <label>Choose a type:</label>
+                <div class="menuFilterPokemonSubContainerArea">
+                    <select id="searchPokemonType">
+                    </select>
+                    <span id="searchPokemonTypeCheck"></span>
+                </div>
+            </div>
+            <div>
+                <button class="menuFilterPokemonButton" onclick="renderPokemonListWithFilter()">Search</button>
+                <button class="menuFilterPokemonButton" onclick="window.location.reload()">Reset all</button>
             </div>
         </div>
-        <div class="menuFilterPokemonSubContainer">
-            <label>Choose a type:</label>
-            <div class="menuFilterPokemonSubContainerArea">
-                <select id="searchPokemonType">
-                </select>
-                <span id="searchPokemonTypeCheck"></span>
+
+        <!-- headline -->
+        <div class="headline">
+            <h1>Pokedex</h1>
+            <div class="headlineBigLine"></div>
+            <div class="headlineSmallLine"></div>
+        </div>
+
+        <!-- pokemon list -->
+        <div id="pokemonList">
+        </div>
+
+        <!-- page navigation -->
+        <div class="pageNavigation" id="pageNavigation">
+            <span class="pageNavigationArrow" onclick="lastPage()">&#60</span>
+            <div class="pageNavigationPageNumberArea">
+                <span class="pageNavigationPageNumberSuffix">Page</span>
+                <input class="pageNavigationPageNumber" type="number" value="1" min="1" max="40" onchange="showPageInput()"
+                    id="pageNavigationPageNumber">
+                <span class="pageNavigationPageNumberSuffix">/ 10</span>
             </div>
+            <span class="pageNavigationArrow" onclick="nextPage()">&#62</span>
         </div>
-        <div>
-            <button class="menuFilterPokemonButton" onclick="renderPokemonListWithFilter()">Search</button>
-            <button class="menuFilterPokemonButton" onclick="window.location.reload()">Reset all</button>
-        </div>
+
     </div>
 
-    <!-- headline -->
-    <div class="headline">
-        <h1>Pokedex</h1>
-        <div class="headlineBigLine"></div>
-        <div class="headlineSmallLine"></div>
+    <!-- pokemon card -->
+    <div class="min-h d-none" id="pokemonCard">
+        <span class="pokemonCardCloseSign" onclick="closePokemonCard()">&#215</span>
     </div>
-
-    <!-- pokemon list -->
-    <div id="pokemonList">
-    </div>
-
-    <!-- page navigation -->
-    <div class="pageNavigation" id="pageNavigation">
-        <span class="pageNavigationArrow" onclick="lastPage()">&#60</span>
-        <div class="pageNavigationPageNumberArea">
-            <span class="pageNavigationPageNumberSuffix">Page</span>
-            <input class="pageNavigationPageNumber" type="number" value="1" min="1" max="40" onchange="showPage()"
-                id="pageNavigationPageNumber">
-            <span class="pageNavigationPageNumberSuffix">/ 10</span>
-        </div>
-        <span class="pageNavigationArrow" onclick="nextPage()">&#62</span>
-    </div>
-
-    <!--     <section class="min-h d-none" id="pokemonCard"></section>
-    <section class="min-h d-none" id="pokemonCardText">
+    <div class="min-h d-none" id="pokemonCardText">
         <img id="pokemonImg" src="" alt="">
-    </section> -->
+    </div>
+
 </body>
 
 </html>
