@@ -160,13 +160,13 @@ input {
 }
 
 h1 {
-    padding-top: 56px;
-    padding-left: 32px;
+    margin-top: 29px;
+    padding-left: 8px;
 }
 
 .headlineBigLine {
     position: absolute;
-    top: 65px;
+    top: 9px;
     left: 0;
     right: -8px;
     height: 28px;
@@ -177,7 +177,7 @@ h1 {
 
 .headlineSmallLine {
     position: absolute;
-    top: 74.5px;
+    top: 19px;
     left: 16px;
     right: 8px;
     height: 8px;
@@ -190,6 +190,7 @@ h1 {
 /* pokemon list */
 #pokemonList {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     margin-top: 58px;
 }
@@ -210,7 +211,7 @@ h1 {
 }
 
 .pokemonSmallCardMainContainer:hover {
-    opacity: 80%;
+    cursor: pointer;
     transform: scale(1.05);
 }
 
@@ -263,10 +264,8 @@ h1 {
 /* page navigation */
 .pageNavigation {
     display: flex;
-    justify-content: center;
-    gap: 160px;
-    margin-top: 40px;
-    margin-bottom: 40px;
+    justify-content: space-between;
+    margin: 40px 8px;
 }
 
 .pageNavigationArrow {

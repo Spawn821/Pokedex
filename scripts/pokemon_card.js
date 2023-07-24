@@ -18,16 +18,23 @@ async function infoAPIContent() {
 }
 
 
-async function openPokemonCard(currentPokemonNumber) {
+async function renderPokemonCard(currentPokedexNumber, currentPokemonColor) {
+    let currentPokemon = await returnJSON(APIS[0] + currentPokedexNumber);
+    let pokemonImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+
+    document.getElementById('pokemonCard').style = getStylePokemonSmallCard(currentPokemonColor);
+    document.getElementById('pokemonImg').src = pokemonImg;
+
+    openPokemonCard();
+}
+
+
+async function openPokemonCard() {
     document.getElementById('panel').classList.add('d-none');
     document.getElementById('pokemonCard').classList.remove('d-none');
     document.getElementById('pokemonCardText').classList.remove('d-none');
-
-    let currentPokemon = await returnJSON(APIS[0] + currentPokemonNumber);
-    let pokemonImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
-
-    document.getElementById('pokemonImg').src = pokemonImg;
 }
+
 
 async function closePokemonCard() {
     document.getElementById('panel').classList.remove('d-none');
