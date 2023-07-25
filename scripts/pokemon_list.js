@@ -3,16 +3,6 @@ let APIS = [
     'https://pokeapi.co/api/v2/type/'
 ];
 
-let currentPage = '';
-
-let pageNumber = 1;
-let pageNumberMax = 10;
-
-let checkFilterName;
-let checkFilterType;
-
-let pokemonIndexNumber;
-
 let pokemonSpeciesColors = [
     {
         'name': 'black',
@@ -56,6 +46,19 @@ let pokemonSpeciesColors = [
     }
 ];
 
+let pokemonDataLoading = [];
+
+let currentPage = '';
+
+let pageNumber = 1;
+let pageNumberMax = 10;
+
+let checkFilterName;
+let checkFilterType;
+
+let pokemonIndexNumber;
+
+
 
 /* ---------------------------------------------------- */
 /* load all functions that are needed at the first start*/
@@ -68,45 +71,92 @@ function init() {
 }
 
 
+
 /* -------------------------------------------- */
 /* represents all pokemon of the respective page */
 /* -------------------------------------------- */
 async function renderPokemonList() {
     openLoadingScreen();
+    clearPokemonDataInArray();
 
-    const pokemon = await returnJSON(currentPage);
+    const pokemons = await returnJSON(currentPage);
     let contentPokemonList = document.getElementById('pokemonList');
     contentPokemonList.innerHTML = '';
 
-    await showOnListPokemon(pokemon, contentPokemonList);
+    await showOnListPokemon(pokemons, contentPokemonList);
     closeLoadingScreen();
 }
 
-async function showOnListPokemon(pokemon, contentPokemonList) {
-    for (let i = 0; i < pokemon['results'].length; i++) {
-        const currentPokemon = await returnJSON(pokemon['results'][i]['url']);
-        const currentPokemonSpecies = await returnJSON(currentPokemon['species']['url']);
-        const currentPokemonColor = findRGBColor(currentPokemonSpecies['color']['name']);
+async function showOnListPokemon(pokemons, contentPokemonList) {
+    for (let i = 0; i < pokemons['results'].length; i++) {
+        const currentPokemon = await returnJSON(pokemons['results'][i]['url']);
 
-        contentPokemonList.innerHTML += getHTMLPokemonList(currentPokemon, currentPokemonSpecies, currentPokemonColor, i);
+        await loadPokemonDataInArray(currentPokemon);
 
-        document.getElementById(`backroundColor${i}`).style = getStylePokemonSmallCard(currentPokemonColor);
+        contentPokemonList.innerHTML += getHTMLPokemonList(
+            pokemonDataLoading[i]['name'], pokemonDataLoading[i]['image'], i);
 
-        renderPokemonTypesList(currentPokemon, i);
+        document.getElementById(`backroundColor${i}`).style = getStylePokemonSmallCard(
+            pokemonDataLoading[i]['color']);
+
+        renderPokemonTypesList(pokemonDataLoading[i]['type'],
+        `pokemonTypeList${i}`, 'pokemonSmallCardSubheadline');
     }
 }
 
 
-function renderPokemonTypesList(currentPokemon, i) {
-    let contentPokemonTypesList = document.getElementById(`pokemonTypeList${i}`);
+function renderPokemonTypesList(pokemonTypes, id, styleClass) {
+    let contentPokemonTypesList = document.getElementById(id);
     contentPokemonTypesList.innerHTML = '';
-    const currentPokemonTypes = currentPokemon['types'];
 
-    for (let j = 0; j < currentPokemonTypes.length; j++) {
-        let currentPokemonType = returnFirstLetterToUpperCase(currentPokemonTypes[j]['type']['name']);
+    for (let j = 0; j < pokemonTypes.length; j++) {
+        let currentPokemonType = pokemonTypes[j];
 
-        contentPokemonTypesList.innerHTML += getHTMLTypesList(currentPokemonType);
+        contentPokemonTypesList.innerHTML += getHTMLTypesList(currentPokemonType, styleClass);
     }
+}
+
+
+function clearPokemonDataInArray() {
+    pokemonDataLoading = [];
+}
+
+
+async function loadPokemonDataInArray(currentPokemon) {
+    const [currentPokemonName, currentPokemonImg, currentPokemonTypesIndex] = await returnDataFromPokemon(currentPokemon);
+    const [currentPokemonColor, currentPokedexNumber] = await returnDataFromPokemonSpecies(currentPokemon);
+
+    pokemonDataLoading.push({
+        'name': currentPokemonName,
+        'type': currentPokemonTypesIndex,
+        'pokedex_number': currentPokedexNumber,
+        'image': currentPokemonImg,
+        'color': currentPokemonColor
+    });
+}
+
+
+async function returnDataFromPokemon(currentPokemon) {
+    const currentPokemonName = returnFirstLetterToUpperCase(currentPokemon['name']);
+    const currentPokemonImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+    const currentPokemonTypes = currentPokemon['types'];
+    let currentPokemonTypesIndex = [];
+
+    for (let i = 0; i < currentPokemonTypes.length; i++) {
+        let currentPokemonType = returnFirstLetterToUpperCase(currentPokemonTypes[i]['type']['name']);
+        currentPokemonTypesIndex.push(currentPokemonType);
+    }
+
+    return [currentPokemonName, currentPokemonImg, currentPokemonTypesIndex];
+}
+
+
+async function returnDataFromPokemonSpecies(currentPokemon) {
+    const currentPokemonSpecies = await returnJSON(currentPokemon['species']['url']);
+    const currentPokemonColor = findRGBColor(currentPokemonSpecies['color']['name']);
+    const currentPokedexNumber = currentPokemonSpecies['pokedex_numbers'][0]['entry_number'];
+
+    return [currentPokemonColor, currentPokedexNumber];
 }
 
 
@@ -133,6 +183,7 @@ function renderPokemonListWithFilter() {
     resetPage();
     openLoadingScreen();
     signLoadPokemonFilterResult();
+    clearPokemonDataInArray();
 
     let contentPokemonList = document.getElementById('pokemonList');
     contentPokemonList.innerHTML = '';
@@ -150,10 +201,12 @@ async function loadPokemonFilterResult(contentPokemonList) {
     pokemonIndexNumber = 0;
 
     for (let k = 1; k < pageNumberMax; k++) {
-        const pokemon = await returnJSON(currentPage);
-        currentPage = pokemon['next'];
+        const pokemons = await returnJSON(currentPage);
+        currentPage = pokemons['next'];
 
-        await showFromPokemonName(contentPokemonList, pokemon, searchPokemonName, searchPokemonType)
+        console.log(k);
+
+        await showFromPokemonName(contentPokemonList, pokemons, searchPokemonName, searchPokemonType)
     }
 
     signCheckPokemonFilterResult(contentPokemonList);
@@ -161,13 +214,14 @@ async function loadPokemonFilterResult(contentPokemonList) {
 }
 
 
-async function showFromPokemonName(contentPokemonList, pokemon, searchPokemonName, searchPokemonType) {
-    for (let i = 0; i < pokemon['results'].length; i++) {
-        const currentPokemon = await returnJSON(pokemon['results'][i]['url']);
-        const currentPokemonSpecies = await returnJSON(currentPokemon['species']['url']);
+async function showFromPokemonName(contentPokemonList, pokemons, searchPokemonName, searchPokemonType) {
+    for (let i = 0; i < pokemons['results'].length; i++) {
+        const currentPokemon = await returnJSON(pokemons['results'][i]['url']);
 
-        if (currentPokemon['name'].toLowerCase().includes(searchPokemonName)) {
-            showFromPokemonType(contentPokemonList, currentPokemon, currentPokemonSpecies, searchPokemonType)
+        await loadPokemonDataInArray(currentPokemon);
+
+        if (pokemonDataLoading[pokemonIndexNumber]['name'].toLowerCase().includes(searchPokemonName)) {
+            showFromPokemonType(contentPokemonList, searchPokemonType)
         }
 
         pokemonIndexNumber++;
@@ -175,17 +229,20 @@ async function showFromPokemonName(contentPokemonList, pokemon, searchPokemonNam
 }
 
 
-function showFromPokemonType(contentPokemonList, currentPokemon, currentPokemonSpecies, searchPokemonType) {
-    for (let j = 0; j < currentPokemon['types'].length; j++) {
-        const currentPokemonType = currentPokemon['types'][j]['type']['name'];
-        const currentPokemonColor = findRGBColor(currentPokemonSpecies['color']['name']);
+function showFromPokemonType(contentPokemonList, searchPokemonType) {
+    for (let j = 0; j < pokemonDataLoading[pokemonIndexNumber]['type'].length; j++) {
+        const currentPokemonType = pokemonDataLoading[pokemonIndexNumber]['type'][j];
 
         if (currentPokemonType.toLowerCase().includes(searchPokemonType)) {
-            contentPokemonList.innerHTML += getHTMLPokemonList(currentPokemon, currentPokemonSpecies, currentPokemonColor, pokemonIndexNumber);
+        contentPokemonList.innerHTML += getHTMLPokemonList(
+            pokemonDataLoading[pokemonIndexNumber]['name'], pokemonDataLoading[pokemonIndexNumber]['image'],
+            pokemonIndexNumber);
 
-            document.getElementById(`backroundColor${pokemonIndexNumber}`).style = getStylePokemonSmallCard(currentPokemonColor);
+        document.getElementById(`backroundColor${pokemonIndexNumber}`).style = getStylePokemonSmallCard(
+            pokemonDataLoading[pokemonIndexNumber]['color']);
 
-            renderPokemonTypesList(currentPokemon, pokemonIndexNumber);
+        renderPokemonTypesList(pokemonDataLoading[pokemonIndexNumber]['type'],
+        `pokemonTypeList${pokemonIndexNumber}`, 'pokemonSmallCardSubheadline');
 
             break;
         }
@@ -198,7 +255,7 @@ function openLoadingScreen() {
 }
 
 
-function closeLoadingScreen(contentPokemonList) {
+function closeLoadingScreen() {
     document.getElementById('loadingScreen').classList.add('d-none');
 }
 

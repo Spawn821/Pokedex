@@ -1,6 +1,7 @@
 async function infoAPIContent() {
     let pokemon = await returnJSON('https://pokeapi.co/api/v2/pokemon/1/');
-    let pokemonSpecies = await returnJSON('https://pokeapi.co/api/v2/pokemon-species/10/');
+    let pokemonSpecies = await returnJSON('https://pokeapi.co/api/v2/pokemon-species/1/');
+    let evolutionChain = await returnJSON('https://pokeapi.co/api/v2/evolution-chain/1/');
     let color = await returnJSON('https://pokeapi.co/api/v2/pokemon-color/');
     let form = await returnJSON('https://pokeapi.co/api/v2/pokemon-form/1/');
     let item = await returnJSON('https://pokeapi.co/api/v2/item/4/');
@@ -9,6 +10,7 @@ async function infoAPIContent() {
 
     console.log(pokemon);
     console.log(pokemonSpecies);
+    console.log(evolutionChain);
     console.log(color);
     console.log(form);
     console.log(item);
@@ -18,26 +20,30 @@ async function infoAPIContent() {
 }
 
 
-async function renderPokemonCard(currentPokedexNumber, currentPokemonColor) {
-    let currentPokemon = await returnJSON(APIS[0] + currentPokedexNumber);
-    let pokemonImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+function renderPokemonCard(i) {
+    let pokemonCardContent = document.getElementById('pokemonCardContent');
+    pokemonCardContent.innerHTML = '';
 
-    document.getElementById('pokemonCard').style = getStylePokemonSmallCard(currentPokemonColor);
-    document.getElementById('pokemonImg').src = pokemonImg;
+    pokemonCardContent.innerHTML = getHTMLPokemonCard(pokemonDataLoading[i]['name'],
+        pokemonDataLoading[i]['pokedex_number'], pokemonDataLoading[i]['image'])
+
+    document.getElementById('pokemonCard').style = getStylePokemonSmallCard(
+        pokemonDataLoading[i]['color']);
+
+    renderPokemonTypesList(pokemonDataLoading[i]['type'],
+        'pokemonCardTypes', 'pokemonCardTypesText');
 
     openPokemonCard();
 }
 
 
-async function openPokemonCard() {
+function openPokemonCard() {
     document.getElementById('panel').classList.add('d-none');
-    document.getElementById('pokemonCard').classList.remove('d-none');
-    document.getElementById('pokemonCardText').classList.remove('d-none');
+    document.getElementById('pokemonCardContent').classList.remove('d-none');
 }
 
 
-async function closePokemonCard() {
+function closePokemonCard() {
     document.getElementById('panel').classList.remove('d-none');
-    document.getElementById('pokemonCard').classList.add('d-none');
-    document.getElementById('pokemonCardText').classList.add('d-none');
+    document.getElementById('pokemonCardContent').classList.add('d-none');
 }

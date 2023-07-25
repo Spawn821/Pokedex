@@ -2,14 +2,9 @@
 /* create the pokemoncards on the pokemonlist */
 /* ------------------------------------------ */
 
-function getHTMLPokemonList(currentPokemon, currentPokemonSpecies, currentPokemonColor, i) {
-    let pokedexNumber = currentPokemonSpecies['pokedex_numbers'][0]['entry_number'];
-    let pokemonName = returnFirstLetterToUpperCase(currentPokemon['name']);
-    let pokemonImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
-    let pokeball = './img/pokeball.png';
-
+function getHTMLPokemonList(pokemonName, pokemonImg, i) {
     return /*html*/`
-        <div class="pokemonSmallCardMainContainer" id="backroundColor${i}" onclick="renderPokemonCard(${pokedexNumber}, '${currentPokemonColor}')">
+        <div class="pokemonSmallCardMainContainer" id="backroundColor${i}" onclick="renderPokemonCard(${i})">
             <span class="pokemonSmallCardHeadline">${pokemonName}</span>
             <div class="pokemonSmallCardSubContainer">
                 <div class="pokemonSmallCardSubContainerLeftArea" id="pokemonTypeList${i}">
@@ -17,7 +12,7 @@ function getHTMLPokemonList(currentPokemon, currentPokemonSpecies, currentPokemo
                 <img class="pokemonSmallCardPokemonImg"
                     src="${pokemonImg}">
             </div>
-            <img class="pokemonSmallCardPokeballImg" src="${pokeball}">
+            <img class="pokemonSmallCardPokeballImg" src="./img/pokeball.png">
         </div>
     `;
 }
@@ -30,9 +25,9 @@ function getStylePokemonSmallCard(color) {
 }
 
 
-function getHTMLTypesList(currentPokemonType) {
+function getHTMLTypesList(currentPokemonType, styleClass) {
     return /*html*/`
-        <span class="pokemonSmallCardSubheadline">${currentPokemonType}</span>
+        <span class=${styleClass}>${currentPokemonType}</span>
     `;
 }
 
@@ -70,20 +65,22 @@ function setStylePageNumber(color) {
 /* create the pokemoncard from current pokemon */
 /* ------------------------------------------- */
 
-function getHTMLPokemonCard() {
+function getHTMLPokemonCard(pokemonName, pokedexNumber, pokemonImg) {
     return /*html*/`
         <div class="min-h" id="pokemonCard">
             <span class="pokemonCardCloseSign" onclick="closePokemonCard()">&#8592</span>
             <div class="pokemonCardMainInformation">
                 <div class="pokemonCardMainInformationLeftArea">
-                    <span class="pokemonCardHeadline">Bulbasaur</span>
-                    <div class="pokemonCardTypes">
-                        <span class="pokemonCardTypesText">Grass</span>
-                        <span class="pokemonCardTypesText">Poison</span>
+                    <span class="pokemonCardHeadline">${pokemonName}</span>
+                    <div class="pokemonCardTypes" id="pokemonCardTypes">
                     </div>
                 </div>
-                <span>#001</span>
+                <span>#00${pokedexNumber}</span>
             </div>
+            <img class="pokemonCardPokeballImg" src="./img/pokeball.png" alt="">
+        </div>
+        <div class="min-h" id="pokemonCardText">
+            <img id="pokemonImg" src="${pokemonImg}">
         </div>
     `;
 }

@@ -26,6 +26,13 @@
     <!-- panel -->
     <div class="panel d-none" onclick="closeMenuFilterPokemon()" id="panel">
 
+        <!-- headline -->
+        <div class="headline">
+            <h1>Pokedex</h1>
+            <!--             <div class="headlineBigLine"></div>
+            <div class="headlineSmallLine"></div> -->
+        </div>
+
         <!-- main picture -->
         <img class="mainPicturePokeball" src="./img/pokeball.png" alt="">
         <div class="mainPictureMenu trans-180deg" onclick="showMenuFilterPokemon(); notToClose(event)"
@@ -59,13 +66,6 @@
             </div>
         </div>
 
-        <!-- headline -->
-        <div class="headline">
-            <h1>Pokedex</h1>
-            <!--             <div class="headlineBigLine"></div>
-            <div class="headlineSmallLine"></div> -->
-        </div>
-
         <!-- pokemon list -->
         <div id="pokemonList">
         </div>
@@ -85,22 +85,24 @@
     </div>
 
     <!-- pokemon card -->
-    <div class="min-h" id="pokemonCard">
-        <span class="pokemonCardCloseSign" onclick="closePokemonCard()">&#8592</span>
-        <div class="pokemonCardMainInformation">
-            <div class="pokemonCardMainInformationLeftArea">
-                <span class="pokemonCardHeadline">Bulbasaur</span>
-                <div class="pokemonCardTypes">
-                    <span class="pokemonCardTypesText">Grass</span>
-                    <span class="pokemonCardTypesText">Poison</span>
+    <div id="pokemonCardContent">
+        <div class="min-h" id="pokemonCard">
+            <span class="pokemonCardCloseSign" onclick="closePokemonCard()">&#8592</span>
+            <div class="pokemonCardMainInformation">
+                <div class="pokemonCardMainInformationLeftArea">
+                    <span class="pokemonCardHeadline">Bulbasaur</span>
+                    <div class="pokemonCardTypes" id="pokemonCardTypes">
+                        <span class="pokemonCardTypesText">Grass</span>
+                        <span class="pokemonCardTypesText">Poison</span>
+                    </div>
                 </div>
+                <span>#001</span>
             </div>
-            <span>#001</span>
+            <img class="pokemonCardPokeballImg" src="./img/pokeball.png" alt="">
         </div>
-        <img class="pokemonCardPokeballImg" src="./img/pokeball.png" alt="">
-    </div>
-    <div class="min-h" id="pokemonCardText">
-        <img id="pokemonImg" src="" alt="">
+        <div class="min-h" id="pokemonCardText">
+            <img id="pokemonImg" src="" alt="">
+        </div>
     </div>
 
 </body>

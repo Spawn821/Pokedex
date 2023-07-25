@@ -21,18 +21,20 @@
     height: 32px;
     width: 32px;
     cursor: pointer;
+    z-index: 1;
 }
 
 .pokemonCardMainInformation {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 1;
 }
 
 .pokemonCardMainInformationLeftArea {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 8px;
 }
 
@@ -54,11 +56,11 @@
 .pokemonCardPokeballImg {
     position: absolute;
     right: 0;
-    bottom: -24px;
-    height: 240px;
-    width: 240px;
+    bottom: -40px;
+    height: 400px;
+    width: 400px;
     object-fit: cover;
-    object-position: 48px;
+    object-position: 80px;
     opacity: 20%;
     
 }
@@ -83,5 +85,5 @@
 #pokemonImg {
     height: 240px;
     width: auto;
-    margin-top: -160px;
+    margin-top: -520px;
 }
