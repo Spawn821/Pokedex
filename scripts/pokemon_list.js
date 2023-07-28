@@ -63,6 +63,7 @@ let pokemonIndexNumber;
 /* ---------------------------------------------------- */
 /* load all functions that are needed at the first start*/
 /* ---------------------------------------------------- */
+
 function init() {
     infoAPIContent();
     resetPage();
@@ -75,6 +76,7 @@ function init() {
 /* -------------------------------------------- */
 /* represents all pokemon of the respective page */
 /* -------------------------------------------- */
+
 async function renderPokemonList() {
     openLoadingScreen();
     clearPokemonDataInArray();
@@ -123,7 +125,7 @@ function clearPokemonDataInArray() {
 
 
 async function loadPokemonDataInArray(currentPokemon) {
-    const [currentPokemonName, currentPokemonImg, currentPokemonTypesIndex] = await returnDataFromPokemon(currentPokemon);
+    const [currentPokemonName, currentPokemonImg, currentPokemonTypesIndex, currentPokemonAbilitiesIndex] = await returnDataFromPokemon(currentPokemon);
     const [currentPokemonColor, currentPokedexNumber] = await returnDataFromPokemonSpecies(currentPokemon);
 
     pokemonDataLoading.push({
@@ -131,7 +133,7 @@ async function loadPokemonDataInArray(currentPokemon) {
         'type': currentPokemonTypesIndex,
         'pokedex_number': currentPokedexNumber,
         'image': currentPokemonImg,
-        'color': currentPokemonColor
+        'color': currentPokemonColor,
     });
 }
 
@@ -140,12 +142,7 @@ async function returnDataFromPokemon(currentPokemon) {
     const currentPokemonName = returnFirstLetterToUpperCase(currentPokemon['name']);
     const currentPokemonImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
     const currentPokemonTypes = currentPokemon['types'];
-    let currentPokemonTypesIndex = [];
-
-    for (let i = 0; i < currentPokemonTypes.length; i++) {
-        let currentPokemonType = returnFirstLetterToUpperCase(currentPokemonTypes[i]['type']['name']);
-        currentPokemonTypesIndex.push(currentPokemonType);
-    }
+    let currentPokemonTypesIndex = fillArrayWithData(currentPokemonTypes, 'type', 'name');
 
     return [currentPokemonName, currentPokemonImg, currentPokemonTypesIndex];
 }
@@ -154,7 +151,9 @@ async function returnDataFromPokemon(currentPokemon) {
 async function returnDataFromPokemonSpecies(currentPokemon) {
     const currentPokemonSpecies = await returnJSON(currentPokemon['species']['url']);
     const currentPokemonColor = findRGBColor(currentPokemonSpecies['color']['name']);
-    const currentPokedexNumber = currentPokemonSpecies['pokedex_numbers'][0]['entry_number'];
+    let currentPokedexNumber = currentPokemonSpecies['pokedex_numbers'][0]['entry_number'];
+
+    currentPokedexNumber = createPokedexNumber(currentPokedexNumber.toString());
 
     return [currentPokemonColor, currentPokedexNumber];
 }

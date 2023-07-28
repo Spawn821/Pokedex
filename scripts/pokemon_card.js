@@ -1,21 +1,11 @@
 async function infoAPIContent() {
-    let pokemon = await returnJSON('https://pokeapi.co/api/v2/pokemon/1/');
+    let pokemon = await returnJSON('https://pokeapi.co/api/v2/pokemon/2/');
     let pokemonSpecies = await returnJSON('https://pokeapi.co/api/v2/pokemon-species/1/');
-    let evolutionChain = await returnJSON('https://pokeapi.co/api/v2/evolution-chain/1/');
-    let color = await returnJSON('https://pokeapi.co/api/v2/pokemon-color/');
-    let form = await returnJSON('https://pokeapi.co/api/v2/pokemon-form/1/');
-    let item = await returnJSON('https://pokeapi.co/api/v2/item/4/');
-    let type = await returnJSON('https://pokeapi.co/api/v2/type/');
-    let secondRange = await returnJSON('https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20');
+    let pokemonGender = await returnJSON('https://pokeapi.co/api/v2/move/1/');
 
     console.log(pokemon);
     console.log(pokemonSpecies);
-    console.log(evolutionChain);
-    console.log(color);
-    console.log(form);
-    console.log(item);
-    console.log(type);
-    console.log(secondRange);
+    console.log(pokemonGender);
 
 }
 

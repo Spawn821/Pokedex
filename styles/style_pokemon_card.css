@@ -1,0 +1,184 @@
+/* default settings */
+.min-h {
+    height: 50vh;
+}
+
+/* pokemon card */
+#pokemonCard {
+    background-color: rgb(122, 199, 76);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: white;
+    font-weight: bold;
+    position: relative;
+    padding-top: 24px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.pokemonCardCloseSign {
+    font-size: 24px;
+    height: 32px;
+    width: 32px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.pokemonCardMainInformation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.pokemonCardMainInformationLeftArea {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.pokemonCardHeadline {
+    font-size: 32px;
+}
+
+.pokemonCardTypes {
+    display: flex;
+    gap: 8px;
+}
+
+.pokemonCardTypesText {
+    padding: 4px 8px;
+    background-color: rgba(0 0 0 / 10%);
+    border-radius: 16px;
+}
+
+.pokemonCardPokeballImg {
+    position: absolute;
+    right: 0;
+    bottom: -40px;
+    height: 400px;
+    width: 400px;
+    object-fit: cover;
+    object-position: 80px;
+    opacity: 20%;
+}
+
+
+
+/* pokemon card text area */
+#pokemonCardText {
+    background-color: white;
+    margin-top: -24px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 15px;
+}
+
+#pokemonCardPokemonImg {
+    height: 240px;
+    width: auto;
+    margin-top: -200px;
+}
+
+.pokemonCardNav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pokemonCardNavLink {
+    font-weight: bold;
+    color: rgba(0 0 0 / 30%);
+    text-decoration: none;
+}
+
+.pokemonCardNavLink:hover {
+    cursor: pointer;
+    color: black;
+    text-decoration: underline;
+    text-underline-offset: 8px;
+    text-decoration-thickness: 2px;
+}
+
+
+/* pokemon card text area page one */
+.pokemonCardInfo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 32px;
+}
+
+.pokemonCardInfoWindow {
+    width: 100%;
+}
+
+table {
+    width: 240px;
+}
+
+.pokemonCardInfoTextTableHeadline {
+    text-align: start;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    font-size: 17px;
+}
+
+.pokemonCardInfoTextLeft {
+    font-weight: bold;
+    color: rgba(0 0 0 / 30%);
+}
+
+.pokemonCardInfoTextRight {
+    font-weight: bold;
+    color: black;
+}
+
+
+/* pokemon card text area page two */
+.pokemonCardInfoTextHeadline {
+    text-align: start;
+    font-size: 17px;
+}
+
+
+/* pokemon card text area page three */
+.pokemonCardInfoTextPageThree {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 4px;
+}
+
+.pokemonCardInfoTextPageThreeHeadline {
+    margin-bottom: 4px;
+}
+
+.pokemonCardInfoTextPageThreeSeparator {
+    border: 2px solid lightgray;
+}
+
+.pokemonCardInfoTextPageThreeHeadlineSubText {
+    font-weight: bold;
+    color: rgba(0 0 0 / 30%);
+}
+
+#pokemonCardInfoTextPokemonImg {
+    height: 72px;
+    width: 72px;
+    border: 4px;
+    border-style: outset;
+    border-radius: 50%;
+    padding: 4px;
+}

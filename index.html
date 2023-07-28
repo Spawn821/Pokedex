@@ -7,8 +7,8 @@
     <title>Pokedex</title>
 
     <!-- import styles -->
-    <link rel="stylesheet" href="./style_pokemon_list.css">
-    <link rel="stylesheet" href="./style_pokemon_card.css">
+    <link rel="stylesheet" href="./styles/style_pokemon_list.css">
+    <link rel="stylesheet" href="./styles/style_pokemon_card.css">
     <link rel="stylesheet" href="./fonts.css">
 
     <!-- import scripts -->
@@ -18,7 +18,7 @@
     <script src="./scripts/html_templates.js"></script>
 </head>
 
-<body onload="init()">
+<body onload="init(); includeHTML()">
 
     <!-- loading screen -->
     <div class="d-none" id="loadingScreen"></div>
@@ -101,7 +101,18 @@
             <img class="pokemonCardPokeballImg" src="./img/pokeball.png" alt="">
         </div>
         <div class="min-h" id="pokemonCardText">
-            <img id="pokemonImg" src="" alt="">
+            <img id="pokemonCardPokemonImg"
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png">
+            <nav class="pokemonCardNav">
+                <a class="pokemonCardNavLink" href="#">About</a>
+                <a class="pokemonCardNavLink" href="#">Base Stats</a>
+                <a class="pokemonCardNavLink" href="#">Evolution</a>
+                <a class="pokemonCardNavLink" href="#">Moves</a>
+            </nav>
+
+            <div class="pokemonCardInfoWindow">
+                <div class="pokemonCardInfo" w3-include-html="./pokemon_card_pages/pokemon_card_moves.html"></div>
+            </div>
         </div>
     </div>
 

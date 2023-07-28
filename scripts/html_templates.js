@@ -75,7 +75,7 @@ function getHTMLPokemonCard(pokemonName, pokedexNumber, pokemonImg) {
                     <div class="pokemonCardTypes" id="pokemonCardTypes">
                     </div>
                 </div>
-                <span>#00${pokedexNumber}</span>
+                <span>${pokedexNumber}</span>
             </div>
             <img class="pokemonCardPokeballImg" src="./img/pokeball.png" alt="">
         </div>
