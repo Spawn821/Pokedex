@@ -1,6 +1,6 @@
 let APIS = [
     'https://pokeapi.co/api/v2/pokemon/',
-    'https://pokeapi.co/api/v2/type/'
+    'https://pokeapi.co/api/v2/pokemon-species/'
 ];
 
 let pokemonSpeciesColors = [
@@ -72,13 +72,12 @@ function init() {
 }
 
 
-
 /* -------------------------------------------- */
 /* represents all pokemon of the respective page */
 /* -------------------------------------------- */
 
 async function renderPokemonList() {
-    openLoadingScreen();
+    showOrHidePage('loadingScreen', 'remove');
     clearPokemonDataInArray();
 
     const pokemons = await returnJSON(currentPage);
@@ -86,7 +85,7 @@ async function renderPokemonList() {
     contentPokemonList.innerHTML = '';
 
     await showOnListPokemon(pokemons, contentPokemonList);
-    closeLoadingScreen();
+    showOrHidePage('loadingScreen', 'add');
 }
 
 async function showOnListPokemon(pokemons, contentPokemonList) {
@@ -153,8 +152,6 @@ async function returnDataFromPokemonSpecies(currentPokemon) {
     const currentPokemonColor = findRGBColor(currentPokemonSpecies['color']['name']);
     let currentPokedexNumber = currentPokemonSpecies['pokedex_numbers'][0]['entry_number'];
 
-    currentPokedexNumber = createPokedexNumber(currentPokedexNumber.toString());
-
     return [currentPokemonColor, currentPokedexNumber];
 }
 
@@ -180,7 +177,7 @@ async function renderPokemonFilterType() {
 function renderPokemonListWithFilter() {
     hidePageNavigation();
     resetPage();
-    openLoadingScreen();
+    showOrHidePage('loadingScreen', 'remove');
     signLoadPokemonFilterResult();
     clearPokemonDataInArray();
 
@@ -209,7 +206,7 @@ async function loadPokemonFilterResult(contentPokemonList) {
     }
 
     signCheckPokemonFilterResult(contentPokemonList);
-    closeLoadingScreen(contentPokemonList);
+    showOrHidePage('loadingScreen', 'add');
 }
 
 
@@ -246,16 +243,6 @@ function showFromPokemonType(contentPokemonList, searchPokemonType) {
             break;
         }
     }
-}
-
-
-function openLoadingScreen() {
-    document.getElementById('loadingScreen').classList.remove('d-none');
-}
-
-
-function closeLoadingScreen() {
-    document.getElementById('loadingScreen').classList.add('d-none');
 }
 
 

@@ -18,13 +18,13 @@
     <script src="./scripts/html_templates.js"></script>
 </head>
 
-<body onload="init(); includeHTML()">
+<body onload="init()">
 
     <!-- loading screen -->
     <div class="d-none" id="loadingScreen"></div>
 
     <!-- panel -->
-    <div class="panel d-none" onclick="closeMenuFilterPokemon()" id="panel">
+    <div class="panel" onclick="closeMenuFilterPokemon()" id="panel">
 
         <!-- headline -->
         <div class="headline">
@@ -85,7 +85,7 @@
     </div>
 
     <!-- pokemon card -->
-    <div id="pokemonCardContent">
+    <div class="d-none" id="pokemonCardContent">
         <div class="min-h" id="pokemonCard">
             <span class="pokemonCardCloseSign" onclick="closePokemonCard()">&#8592</span>
             <div class="pokemonCardMainInformation">
@@ -104,14 +104,17 @@
             <img id="pokemonCardPokemonImg"
                 src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png">
             <nav class="pokemonCardNav">
-                <a class="pokemonCardNavLink" href="#">About</a>
-                <a class="pokemonCardNavLink" href="#">Base Stats</a>
-                <a class="pokemonCardNavLink" href="#">Evolution</a>
-                <a class="pokemonCardNavLink" href="#">Moves</a>
+                <a class="pokemonCardNavLink" onclick="openPokemonCardPageAbout()">About</a>
+                <a class="pokemonCardNavLink" onclick="openPokemonCardPageBaseStats()">Base Stats</a>
+                <a class="pokemonCardNavLink" onclick="openPokemonCardPageEvolution()">Evolution</a>
+                <a class="pokemonCardNavLink" onclick="openPokemonCardPageMoves()">Moves</a>
             </nav>
 
             <div class="pokemonCardInfoWindow">
-                <div class="pokemonCardInfo" w3-include-html="./pokemon_card_pages/pokemon_card_moves.html"></div>
+                <div class="pokemonCardInfo" w3-include-html="./pokemon_card_pages/pokemon_card_about.html" id="about"></div>
+                <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_base_stats.html" id="baseStats"></div>
+                <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_evolution.html" id="evolution"></div>
+                <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_moves.html" id="moves"></div>
             </div>
         </div>
     </div>

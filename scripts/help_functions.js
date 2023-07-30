@@ -2,6 +2,22 @@
 /* help functions */
 /* -------------- */
 
+async function infoAPIContent() {
+    let pokemon = await returnJSON('https://pokeapi.co/api/v2/pokemon/1/');
+    let pokemonSpecies = await returnJSON('https://pokeapi.co/api/v2/pokemon-species/1/');
+    let pokemonEvolution = await returnJSON('https://pokeapi.co/api/v2/evolution-chain/1/');
+    let pokemonMove1 = await returnJSON('https://pokeapi.co/api/v2/move/14/');
+    let pokemonMove2 = await returnJSON('https://pokeapi.co/api/v2/move/29/');
+
+    console.log(pokemon);
+    console.log(pokemonSpecies);
+    console.log(pokemonEvolution);
+    console.log(pokemonMove1);
+    console.log(pokemonMove2);
+
+}
+
+
 function notToClose(event) {
     event.stopPropagation();
 }
@@ -65,6 +81,15 @@ function fillArrayWithData(dataSource, filterOne, filterTwo) {
     }
 
     return array;
+}
+
+
+function showOrHidePage(id, command) {
+    if (command == 'remove') {
+        document.getElementById(id).classList.remove('d-none');
+    } else {
+        document.getElementById(id).classList.add('d-none');
+    }
 }
 
 

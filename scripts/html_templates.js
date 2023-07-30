@@ -80,7 +80,27 @@ function getHTMLPokemonCard(pokemonName, pokedexNumber, pokemonImg) {
             <img class="pokemonCardPokeballImg" src="./img/pokeball.png" alt="">
         </div>
         <div class="min-h" id="pokemonCardText">
-            <img id="pokemonImg" src="${pokemonImg}">
+            <img id="pokemonCardPokemonImg" src=${pokemonImg}>
+            <nav class="pokemonCardNav">
+                <a class="pokemonCardNavLink" onclick="openPokemonCardPageAbout()">About</a>
+                <a class="pokemonCardNavLink" onclick="openPokemonCardPageBaseStats()">Base Stats</a>
+                <a class="pokemonCardNavLink" onclick="openPokemonCardPageEvolution()">Evolution</a>
+                <a class="pokemonCardNavLink" onclick="openPokemonCardPageMoves()">Moves</a>
+            </nav>
+
+            <div class="pokemonCardInfoWindow">
+                <div class="pokemonCardInfo" w3-include-html="./pokemon_card_pages/pokemon_card_about.html" id="about"></div>
+                <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_base_stats.html" id="baseStats"></div>
+                <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_evolution.html" id="evolution"></div>
+                <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_moves.html" id="moves"></div>
+            </div>
         </div>
+    `;
+}
+
+
+function getHTMLPokemonCardInfoWindow(path) {
+    return /*html*/`
+        <div class="pokemonCardInfo" w3-include-html="${path}"></div>
     `;
 }
