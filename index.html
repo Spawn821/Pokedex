@@ -18,13 +18,13 @@
     <script src="./scripts/html_templates.js"></script>
 </head>
 
-<body onload="init()">
+<body onload="init(); includeHTML()">
 
     <!-- loading screen -->
     <div class="d-none" id="loadingScreen"></div>
 
     <!-- panel -->
-    <div class="panel" onclick="closeMenuFilterPokemon()" id="panel">
+    <div class="panel d-none" onclick="closeMenuFilterPokemon()" id="panel">
 
         <!-- headline -->
         <div class="headline">
@@ -85,7 +85,7 @@
     </div>
 
     <!-- pokemon card -->
-    <div class="d-none" id="pokemonCardContent">
+    <div class="" id="pokemonCardContent">
         <div class="min-h" id="pokemonCard">
             <span class="pokemonCardCloseSign" onclick="closePokemonCard()">&#8592</span>
             <div class="pokemonCardMainInformation">
@@ -110,7 +110,7 @@
                 <a class="pokemonCardNavLink" onclick="openPokemonCardPageMoves()">Moves</a>
             </nav>
 
-            <div class="pokemonCardInfoWindow">
+            <div id="pokemonCardInfo">
                 <div class="pokemonCardInfo" w3-include-html="./pokemon_card_pages/pokemon_card_about.html" id="about"></div>
                 <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_base_stats.html" id="baseStats"></div>
                 <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_evolution.html" id="evolution"></div>

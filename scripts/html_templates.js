@@ -82,13 +82,13 @@ function getHTMLPokemonCard(pokemonName, pokedexNumber, pokemonImg) {
         <div class="min-h" id="pokemonCardText">
             <img id="pokemonCardPokemonImg" src=${pokemonImg}>
             <nav class="pokemonCardNav">
-                <a class="pokemonCardNavLink" onclick="openPokemonCardPageAbout()">About</a>
-                <a class="pokemonCardNavLink" onclick="openPokemonCardPageBaseStats()">Base Stats</a>
+                <a class="pokemonCardNavLink" onclick="createPokemonCardPageAbout(1)">About</a>
+                <a class="pokemonCardNavLink" onclick="createPokemonCardPageBaseStats(1)">Base Stats</a>
                 <a class="pokemonCardNavLink" onclick="openPokemonCardPageEvolution()">Evolution</a>
                 <a class="pokemonCardNavLink" onclick="openPokemonCardPageMoves()">Moves</a>
             </nav>
 
-            <div class="pokemonCardInfoWindow">
+            <div id="pokemonCardInfo">
                 <div class="pokemonCardInfo" w3-include-html="./pokemon_card_pages/pokemon_card_about.html" id="about"></div>
                 <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_base_stats.html" id="baseStats"></div>
                 <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_evolution.html" id="evolution"></div>
@@ -102,5 +102,40 @@ function getHTMLPokemonCard(pokemonName, pokedexNumber, pokemonImg) {
 function getHTMLPokemonCardInfoWindow(path) {
     return /*html*/`
         <div class="pokemonCardInfo" w3-include-html="${path}"></div>
+    `;
+}
+
+
+function getHTMLPokemonCardPageAbout(genus, height, weight, abilities, eggGroups) {
+    return /*html*/`
+        <table>
+            <tr>
+                <td class="pokemonCardInfoTextLeft">Genera</td>
+                <td class="pokemonCardInfoTextRight">${genus}</td>
+            </tr>
+            <tr>
+                <td class="pokemonCardInfoTextLeft">Height</td>
+                <td class="pokemonCardInfoTextRight">${returnPokemonHeightInCm(height)} cm</td>
+            </tr>
+            <tr>
+                <td class="pokemonCardInfoTextLeft">Weight</td>
+                <td class="pokemonCardInfoTextRight">${returnPokemonWeightInKg(weight).toFixed(1)} kg</td>
+            </tr>
+            <tr>
+                <td class="pokemonCardInfoTextLeft">Abilities</td>
+                <td class="pokemonCardInfoTextRight">${returnPokemonAbilitiesAsArray(abilities)}</td>
+            </tr>
+            <tr>
+                <th class="pokemonCardInfoTextTableHeadline">Breeding</th>
+            </tr>
+            <tr>
+                <td class="pokemonCardInfoTextLeft">Egg Groups</td>
+                <td class="pokemonCardInfoTextRight">${eggGroups[0]}</td>
+            </tr>
+            <tr>
+                <td class="pokemonCardInfoTextLeft">Egg Cycle</td>
+                <td class="pokemonCardInfoTextRight">${eggGroups[1]}</td>
+            </tr>
+        </table>
     `;
 }

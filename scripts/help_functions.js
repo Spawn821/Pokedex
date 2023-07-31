@@ -3,8 +3,8 @@
 /* -------------- */
 
 async function infoAPIContent() {
-    let pokemon = await returnJSON('https://pokeapi.co/api/v2/pokemon/1/');
-    let pokemonSpecies = await returnJSON('https://pokeapi.co/api/v2/pokemon-species/1/');
+    let pokemon = await returnJSON('https://pokeapi.co/api/v2/pokemon/11/');
+    let pokemonSpecies = await returnJSON('https://pokeapi.co/api/v2/pokemon-species/11/');
     let pokemonEvolution = await returnJSON('https://pokeapi.co/api/v2/evolution-chain/1/');
     let pokemonMove1 = await returnJSON('https://pokeapi.co/api/v2/move/14/');
     let pokemonMove2 = await returnJSON('https://pokeapi.co/api/v2/move/29/');
@@ -44,7 +44,23 @@ function findRGBColor(color) {
 
 
 function returnFirstLetterToUpperCase(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    let arr = [];
+
+    if (str.split('-')) {
+        arr = str.split('-');
+    } else {
+        arr = str.split(' ');
+    }
+
+    for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+    }
+
+    if (str.split('-')) {
+        return newStr = arr.join('-');
+    } else {
+        return newStr = arr.join(' ');
+    }
 }
 
 
@@ -59,7 +75,7 @@ function hidePageNavigation() {
 
 function createPokedexNumber(pokedexNumber) {
     let newPokedexNumber = '';
-    let interval = 3 - pokedexNumber.length 
+    let interval = 3 - pokedexNumber.length
 
     newPokedexNumber += '#';
 
@@ -73,10 +89,16 @@ function createPokedexNumber(pokedexNumber) {
 }
 
 
-function fillArrayWithData(dataSource, filterOne, filterTwo) {
-    let array = []; 
+function fillArrayWithData(dataSource, filterOne, filterTwo = null) {
+    let array = [];
+    let data;
+
     for (let i = 0; i < dataSource.length; i++) {
-        const data = returnFirstLetterToUpperCase(dataSource[i][filterOne][filterTwo]);
+        if (filterTwo != null) {
+            data = returnFirstLetterToUpperCase(dataSource[i][filterOne][filterTwo]);
+        } else {
+            data = returnFirstLetterToUpperCase(dataSource[i][filterOne]);
+        }
         array.push(data);
     }
 
