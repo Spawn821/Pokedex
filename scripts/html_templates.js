@@ -65,7 +65,7 @@ function setStylePageNumber(color) {
 /* create the pokemoncard from current pokemon */
 /* ------------------------------------------- */
 
-function getHTMLPokemonCard(pokemonName, pokedexNumber, pokemonImg) {
+function getHTMLPokemonCard(pokemonName, pokedexNumber, pokedexNumberClean, pokemonImg) {
     return /*html*/`
         <div class="min-h" id="pokemonCard">
             <span class="pokemonCardCloseSign" onclick="closePokemonCard()">&#8592</span>
@@ -82,10 +82,10 @@ function getHTMLPokemonCard(pokemonName, pokedexNumber, pokemonImg) {
         <div class="min-h" id="pokemonCardText">
             <img id="pokemonCardPokemonImg" src=${pokemonImg}>
             <nav class="pokemonCardNav">
-                <a class="pokemonCardNavLink" onclick="createPokemonCardPageAbout(1)">About</a>
-                <a class="pokemonCardNavLink" onclick="createPokemonCardPageBaseStats(1)">Base Stats</a>
-                <a class="pokemonCardNavLink" onclick="openPokemonCardPageEvolution()">Evolution</a>
-                <a class="pokemonCardNavLink" onclick="openPokemonCardPageMoves()">Moves</a>
+                <a class="pokemonCardNavLink" onclick="createPokemonCardPageAbout(${pokedexNumberClean})">About</a>
+                <a class="pokemonCardNavLink" onclick="createPokemonCardPageBaseStats(${pokedexNumberClean})">Base Stats</a>
+                <a class="pokemonCardNavLink" onclick="createPokemonCardPageEvolution(${pokedexNumberClean})">Evolution</a>
+                <a class="pokemonCardNavLink" onclick="openPokemonCardPageMoves(${pokedexNumberClean})">Moves</a>
             </nav>
 
             <div id="pokemonCardInfo">
@@ -137,5 +137,20 @@ function getHTMLPokemonCardPageAbout(genus, height, weight, abilities, eggGroups
                 <td class="pokemonCardInfoTextRight">${eggGroups[1]}</td>
             </tr>
         </table>
+    `;
+}
+
+
+function getHTMLPokemonCardPageBaseStats(name, baseStat, progress) {
+    return /*html*/`
+        <tr>
+            <td class="pokemonCardInfoTextLeft">${name}</td>
+            <td class="pokemonCardInfoTextRight" id="pokemonCardInfoHP">${baseStat}</td>
+            <td class="pokemonCardInfoTextRight">
+                <div class="pokemonCardInfoTextRightBar" id>
+                    <div class="pokemonCardInfoTextRightBarProgress" style="width: ${progress}px"></div>
+                </div>
+            </td>
+        </tr>
     `;
 }

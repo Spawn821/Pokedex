@@ -3,10 +3,10 @@
 /* -------------- */
 
 async function infoAPIContent() {
-    let pokemon = await returnJSON('https://pokeapi.co/api/v2/pokemon/11/');
-    let pokemonSpecies = await returnJSON('https://pokeapi.co/api/v2/pokemon-species/11/');
+    let pokemon = await returnJSON('https://pokeapi.co/api/v2/pokemon/1/');
+    let pokemonSpecies = await returnJSON('https://pokeapi.co/api/v2/pokemon-species/1/');
     let pokemonEvolution = await returnJSON('https://pokeapi.co/api/v2/evolution-chain/1/');
-    let pokemonMove1 = await returnJSON('https://pokeapi.co/api/v2/move/14/');
+    let pokemonMove1 = await returnJSON('https://pokeapi.co/api/v2/evolution-chain/1/');
     let pokemonMove2 = await returnJSON('https://pokeapi.co/api/v2/move/29/');
 
     console.log(pokemon);
@@ -46,9 +46,11 @@ function findRGBColor(color) {
 function returnFirstLetterToUpperCase(str) {
     let arr = [];
 
-    if (str.split('-')) {
+    if (str.includes('-')) {
         arr = str.split('-');
-    } else {
+    } else if (str.includes('. ')) {
+        arr = str.split('. ');
+    }else {
         arr = str.split(' ');
     }
 
@@ -56,8 +58,10 @@ function returnFirstLetterToUpperCase(str) {
         arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
     }
 
-    if (str.split('-')) {
+    if (str.includes('-')) {
         return newStr = arr.join('-');
+    } else if (str.includes('. ')) {
+        return newStr = arr.join('. ');
     } else {
         return newStr = arr.join(' ');
     }
@@ -112,6 +116,14 @@ function showOrHidePage(id, command) {
     } else {
         document.getElementById(id).classList.add('d-none');
     }
+}
+
+
+async function returnPokemonAndPokemonSpecies(pokedexNumber) {
+    const pokemon = await returnJSON(APIS[0] + pokedexNumber);
+    const pekemonSpecies = await returnJSON(APIS[1] + pokedexNumber);
+
+    return [pokemon, pekemonSpecies];
 }
 
 

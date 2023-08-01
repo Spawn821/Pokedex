@@ -1,22 +1,3 @@
-let pokemonCardInfoPageNames = [
-    'about',
-    'baseStats',
-    'evolution',
-    'moves'
-]
-
-let pokemonCardInfoBaseStatsIDs = [
-    { 'id': 'pokemonCardInfoHP', 'idProgress': 'pokemonCardInfoHPProgress' },
-    { 'id': 'pokemonCardInfoAttack', 'idProgress': 'pokemonCardInfoAttackProgress' },
-    { 'id': 'pokemonCardInfoDefense', 'idProgress': 'pokemonCardInfoDefenseProgress' },
-    { 'id': 'pokemonCardInfoSpAtk', 'idProgress': 'pokemonCardInfoSpAtkProgress' },
-    { 'id': 'pokemonCardInfoSpDef', 'idProgress': 'pokemonCardInfoSpDefProgress' },
-    { 'id': 'pokemonCardInfoSpeed', 'idProgress': 'pokemonCardInfoSpeedProgress' },
-    { 'id': 'pokemonCardInfoTotal', 'idProgress': 'pokemonCardInfoTotalProgress' }
-];
-
-
-
 /* ---------------------------------------------- */
 /* show the clicked current pokemon with all data */
 /* ---------------------------------------------- */
@@ -27,7 +8,7 @@ function renderPokemonCard(i) {
     let pokedexNumber = createPokedexNumber(pokemonDataLoading[i]['pokedex_number'].toString());
 
     pokemonCardContent.innerHTML = getHTMLPokemonCard(pokemonDataLoading[i]['name'],
-        pokedexNumber, pokemonDataLoading[i]['image'])
+        pokedexNumber, pokemonDataLoading[i]['pokedex_number'], pokemonDataLoading[i]['image'])
 
     document.getElementById('pokemonCard').style = getStylePokemonSmallCard(
         pokemonDataLoading[i]['color']);
@@ -41,9 +22,26 @@ function renderPokemonCard(i) {
 }
 
 
+function openPokemonCard() {
+    document.getElementById('panel').classList.add('d-none');
+    document.getElementById('pokemonCardContent').classList.remove('d-none');
+}
+
+
+function closePokemonCard() {
+    document.getElementById('panel').classList.remove('d-none');
+    document.getElementById('pokemonCardContent').classList.add('d-none');
+}
+
+
+
+/* ------------------------- */
+/* pokemon card page 'about' */
+/* ------------------------- */
+
 async function createPokemonCardPageAbout(pokedexNumber) {
-    let pokemonCardPageAbout = document.getElementById('pokemonCardInfo');
-    pokemonCardPageAbout.innerHTML = '';
+    let pokemonCardInfoContent = document.getElementById('pokemonCardInfo');
+    pokemonCardInfoContent.innerHTML = '';
     const [pokemon, pokemonSpecies] = await returnPokemonAndPokemonSpecies(pokedexNumber);
     const genus = returnPokemonGenus(pokemonSpecies['genera']);
     const height = pokemon['height'];
@@ -51,15 +49,7 @@ async function createPokemonCardPageAbout(pokedexNumber) {
     const abilities = pokemon['abilities'];
     const eggGroups = returnPokemonEggGroupsAsArray(pokemonSpecies['egg_groups']);
 
-    pokemonCardPageAbout.innerHTML = getHTMLPokemonCardPageAbout(genus, height, weight, abilities, eggGroups);
-}
-
-
-async function returnPokemonAndPokemonSpecies(pokedexNumber) {
-    const pokemon = await returnJSON(APIS[0] + pokedexNumber);
-    const pekemonSpecies = await returnJSON(APIS[1] + pokedexNumber);
-
-    return [pokemon, pekemonSpecies];
+    pokemonCardInfoContent.innerHTML = getHTMLPokemonCardPageAbout(genus, height, weight, abilities, eggGroups);
 }
 
 
@@ -123,150 +113,125 @@ function returnPokemonEggGroupsAsArray(eggGroups) {
 }
 
 
+
+/* ------------------------------ */
+/* pokemon card page 'base stats' */
+/* ------------------------------ */
+
 async function createPokemonCardPageBaseStats(pokedexNumber) {
-    let pokemonCardPageBaseStatsContent = document.getElementById('pokemonCardInfo'); 
-    pokemonCardPageBaseStatsContent.innerHTML = '';
+    let pokemonCardInfoContent = document.getElementById('pokemonCardInfo');
+    pokemonCardInfoContent.innerHTML = '';
     let pokemonCardPageBaseStats = document.createElement('table');
     const [pokemon, pokemonSpecies] = await returnPokemonAndPokemonSpecies(pokedexNumber);
     const pokemonStats = pokemon['stats'];
+    let resultProgress = 0;
     let pokemonStatsTotal = 0;
 
+    addBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, pokemonStats, resultProgress, pokemonStatsTotal);
+}
 
+
+function addBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, pokemonStats, resultProgress, pokemonStatsTotal) {
     for (let i = 0; i < pokemonStats.length; i++) {
-        const pokemonBaseStat = pokemonStats[i]['base_stat'];
-        const pokemonStatName = pokemonStats[i]['stat']['name'];
-        const [name, id] = configurationForBaseStat(pokemonStatName);
+        let pokemonBaseStat = pokemonStats[i]['base_stat'];
+        let pokemonStatName = pokemonStats[i]['stat']['name'];
 
-        pokemonCardPageBaseStats.innerHTML += getHTMLPokemonCardPageBaseStats(name, pokemonBaseStat, id);
+        pokemonStatName = returnFirstLetterToUpperCase(controleLengthOfBaseStatName(pokemonStatName));
+
+        resultProgress = pokemonCardBaseStatsProgress(pokemonBaseStat, 100);
+        pokemonStatsTotal += +pokemonBaseStat;
+        pokemonCardPageBaseStats.innerHTML += getHTMLPokemonCardPageBaseStats(pokemonStatName, pokemonBaseStat, resultProgress);
     }
 
-    document.getElementById('pokemonCardInfo').appendChild(pokemonCardPageBaseStats);
+    addTotalfromBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, resultProgress, pokemonStatsTotal);
 }
 
 
-function configurationForBaseStat(pokemonStatName) {
-    let name = '', id = '';
+function addTotalfromBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, resultProgress, pokemonStatsTotal) {
+    resultProgress = pokemonCardBaseStatsProgress(pokemonStatsTotal, 600);
+    pokemonCardPageBaseStats.innerHTML += getHTMLPokemonCardPageBaseStats('Total', pokemonStatsTotal, resultProgress);
 
-    if (pokemonStatName == 'hp') {
-        name = 'HP', id = 'pokemonCardInfoHPProgress'
-    } else if (pokemonStatName == 'attack') {
-        name = 'Attack', id = 'pokemonCardInfoAttackProgress'
-    } else if (pokemonStatName == 'defense') {
-        name = 'Defense', id = 'pokemonCardInfoDefenseProgress'
-    } else if (pokemonStatName == 'special-attack') {
-        name = 'Sp. Atk', id = 'pokemonCardInfoSpAtkProgress'
+    pokemonCardInfoContent.appendChild(pokemonCardPageBaseStats);
+}
+
+
+function controleLengthOfBaseStatName(pokemonStatName) {
+    let changedName = '';
+
+    if (pokemonStatName == 'special-attack') {
+        changedName = 'sp. atk';
     } else if (pokemonStatName == 'special-defense') {
-        name = 'Sp. Def', id = 'pokemonCardInfoSpDefProgress'
-    } else if (pokemonStatName == 'speed') {
-        name = 'Speed', id = 'pokemonCardInfoSpeedProgress'
+        changedName = 'sp. def';
+    } else {
+        changedName = pokemonStatName;
     }
 
-    return [name, id];
+    return changedName;
 }
 
 
-function getHTMLPokemonCardPageBaseStats(name, baseStat, id) {
-    return /*html*/`
-        <tr>
-            <td class="pokemonCardInfoTextLeft">${name}</td>
-            <td class="pokemonCardInfoTextRight" id="pokemonCardInfoHP">${baseStat}</td>
-            <td class="pokemonCardInfoTextRight">
-                <div class="pokemonCardInfoTextRightBar" id>
-                    <div class="pokemonCardInfoTextRightBarProgress" id=${id}></div>
-                </div>
-            </td>
-        </tr>
-    `;
-}
 
-
-function openPokemonCard() {
-    document.getElementById('panel').classList.add('d-none');
-    document.getElementById('pokemonCardContent').classList.remove('d-none');
-}
-
-
-function closePokemonCard() {
-    document.getElementById('panel').classList.remove('d-none');
-    document.getElementById('pokemonCardContent').classList.add('d-none');
-}
-
-
-function pokemonCardBaseStatsProgress(id, idProgress) {
-    const value = +document.getElementById(id).innerHTML;
+function pokemonCardBaseStatsProgress(baseStat, procent) {
     const procentValue = 144;
     let result = 0;
 
-    if (id.includes('Total')) {
-        result = value * procentValue / 600;
-    } else {
-        result = value * procentValue / 100;
+    result = baseStat * procentValue / procent;
+
+    return result;
+}
+
+
+
+/* ------------------------------ */
+/* pokemon card page 'base stats' */
+/* ------------------------------ */
+
+async function createPokemonCardPageEvolution(pokedexNumber) {
+    let pokemonCardInfoContent = document.getElementById('pokemonCardInfo');
+    pokemonCardInfoContent.innerHTML = '';
+    const [pokemon, pokemonSpecies] = await returnPokemonAndPokemonSpecies(pokedexNumber);
+    const pokemonEvolutionChange = await returnJSON(pokemonSpecies['evolution_chain']['url']);
+
+    findEvoltuionInChanges(pokemonCardInfoContent, pokemonEvolutionChange);
+}
+
+async function findEvoltuionInChain(pokemonCardInfoContent, pokemonEvolutionChange) {
+    let evolutionStep1 = pokemonEvolutionChange['chain']['species']['url'];
+    let extractPokemonNumber = 0;
+    extractPokemonNumber = extractNumberFromUrl(evolutionStep1);
+    let currentPokemon = await returnJSON(APIS[0] + extractPokemonNumber[extractPokemonNumber.length - 1]);
+    let currentPokemonName = currentPokemon['name'];
+    let currentPokemonImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+    console.log(currentPokemonName);
+    console.log(currentPokemonImg);
+
+    for (let i = 0; i < pokemonEvolutionChange['chain']['evolves_to'].length; i++) {
+        const evolutionStep2 = pokemonEvolutionChange['chain']['evolves_to'][i]['species']['name'];
+        console.log(evolutionStep2);
+
+        for (let j = 0; j < pokemonEvolutionChange['chain']['evolves_to'][i]['evolves_to'].length; j++) {
+            const evolutionStep3 = pokemonEvolutionChange['chain']['evolves_to'][i]['evolves_to'][j]['species']['name'];
+            console.log(evolutionStep3);
+        }
     }
-
-    document.getElementById(idProgress).style = `width: ${result}px`;
 }
 
 
-function openPokemonCardPageAbout() {
-    let commands = [
-        'remove',
-        'add',
-        'add',
-        'add'
-    ]
-
-    openPokemonCardPage(commands);
+function extractNumberFromUrl(url) {
+    return url.match(/\d+/g);
 }
 
 
-function openPokemonCardPageBaseStats() {
-    let commands = [
-        'add',
-        'remove',
-        'add',
-        'add'
-    ]
-
-    openPokemonCardPage(commands);
-
-    for (let i = 0; i < pokemonCardInfoBaseStatsIDs.length; i++) {
-        const id = pokemonCardInfoBaseStatsIDs[i]['id'];
-        const idProgress = pokemonCardInfoBaseStatsIDs[i]['idProgress'];
-
-        pokemonCardBaseStatsProgress(id, idProgress);
-    }
-}
-
-
-function openPokemonCardPageEvolution() {
-    let commands = [
-        'add',
-        'add',
-        'remove',
-        'add'
-    ]
-
-    openPokemonCardPage(commands);
-}
-
-
-function openPokemonCardPageMoves() {
-    let commands = [
-        'add',
-        'add',
-        'add',
-        'remove'
-    ]
-
-    openPokemonCardPage(commands);
-}
-
-
-function openPokemonCardPage(commands) {
-    for (let i = 0; i < pokemonCardInfoPageNames.length; i++) {
-        const pageName = pokemonCardInfoPageNames[i];
-        const command = commands[i];
-
-        showOrHidePage(pageName, command)
-    }
+function getHTMLPokemonCardPageEvolution() {
+    return /*html*/`
+        <div class="pokemonCardInfoTextPageThree">
+            <div>
+                <h3 class="pokemonCardInfoTextPageThreeHeadline">Bulbasaur</h3>
+                <div class="pokemonCardInfoTextPageThreeSeparator"></div>
+                <span class="pokemonCardInfoTextPageThreeHeadlineSubText">Level 1</S></span>
+            </div>
+            <img id="pokemonCardInfoTextPokemonImg"
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png">
+        </div>
+    `;
 }
