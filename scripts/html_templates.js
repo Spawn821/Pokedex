@@ -85,7 +85,7 @@ function getHTMLPokemonCard(pokemonName, pokedexNumber, pokedexNumberClean, poke
                 <a class="pokemonCardNavLink" onclick="createPokemonCardPageAbout(${pokedexNumberClean})">About</a>
                 <a class="pokemonCardNavLink" onclick="createPokemonCardPageBaseStats(${pokedexNumberClean})">Base Stats</a>
                 <a class="pokemonCardNavLink" onclick="createPokemonCardPageEvolution(${pokedexNumberClean})">Evolution</a>
-                <a class="pokemonCardNavLink" onclick="openPokemonCardPageMoves(${pokedexNumberClean})">Moves</a>
+                <a class="pokemonCardNavLink" onclick="createPokemonCardPageMoves(${pokedexNumberClean})">Moves</a>
             </nav>
 
             <div id="pokemonCardInfo">
@@ -141,16 +141,30 @@ function getHTMLPokemonCardPageAbout(genus, height, weight, abilities, eggGroups
 }
 
 
-function getHTMLPokemonCardPageBaseStats(name, baseStat, progress) {
+function getHTMLPokemonCardPageBaseStats(name, baseStat, progress, color) {
     return /*html*/`
         <tr>
             <td class="pokemonCardInfoTextLeft">${name}</td>
             <td class="pokemonCardInfoTextRight" id="pokemonCardInfoHP">${baseStat}</td>
             <td class="pokemonCardInfoTextRight">
                 <div class="pokemonCardInfoTextRightBar" id>
-                    <div class="pokemonCardInfoTextRightBarProgress" style="width: ${progress}px"></div>
+                    <div style="width: ${progress}px; border: 2px solid ${color}"></div>
                 </div>
             </td>
         </tr>
+    `;
+}
+
+
+function getHTMLPokemonCardPageEvolution(pokemonName, level, pokemonImg) {
+    return /*html*/`
+        <div class="pokemonCardInfoTextPageThree">
+            <div>
+                <h3 class="pokemonCardInfoTextPageThreeHeadline">${pokemonName}</h3>
+                <div class="pokemonCardInfoTextPageThreeSeparator"></div>
+                <span class="pokemonCardInfoTextPageThreeHeadlineSubText">${level}</S></span>
+            </div>
+            <img id="pokemonCardInfoTextPokemonImg" src=${pokemonImg}>
+        </div>
     `;
 }

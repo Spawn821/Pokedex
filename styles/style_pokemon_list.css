@@ -1,6 +1,7 @@
 body {
     font-family: 'Open Sans';
     margin: 0;
+    display: flex;
 }
 
 
@@ -41,7 +42,10 @@ input {
 /* panel */
 .panel {
     min-height: 100vh;
+    width: 100%;
     margin: 8px;
+    margin-right: 320px;
+    position: relative;
 }
 
 
@@ -165,27 +169,6 @@ h1 {
     padding-left: 8px;
 }
 
-.headlineBigLine {
-    position: absolute;
-    top: 9px;
-    left: 0;
-    right: -8px;
-    height: 28px;
-    background-color: rgba(0 0 0 / 15%);
-    border-top-left-radius: 32px;
-    border-bottom-left-radius: 32px;
-}
-
-.headlineSmallLine {
-    position: absolute;
-    top: 19px;
-    left: 16px;
-    right: 8px;
-    height: 8px;
-    background-color: rgba(0 0 0 / 10%);
-    border-radius: 32px;
-}
-
 
 
 /* pokemon list */
@@ -265,8 +248,19 @@ h1 {
 /* page navigation */
 .pageNavigation {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin: 40px 8px;
+    gap: 150px;
+}
+
+@media(max-width: 1000px) {
+    .pageNavigation {
+        display: flex;
+        justify-content: space-between;
+        margin: 40px 8px;
+        width: unset;
+        gap: unset;
+    }
 }
 
 .pageNavigationArrow {

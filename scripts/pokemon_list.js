@@ -1,6 +1,7 @@
 let APIS = [
     'https://pokeapi.co/api/v2/pokemon/',
-    'https://pokeapi.co/api/v2/pokemon-species/'
+    'https://pokeapi.co/api/v2/pokemon-species/',
+    'https://pokeapi.co/api/v2/type/'
 ];
 
 let pokemonSpeciesColors = [
@@ -162,7 +163,7 @@ async function returnDataFromPokemonSpecies(currentPokemon) {
 /* ------------------------------- */
 
 async function renderPokemonFilterType() {
-    const pokemonType = await returnJSON(APIS[1]);
+    const pokemonType = await returnJSON(APIS[2]);
     let contentPokemonFilterType = document.getElementById('searchPokemonType');
     contentPokemonFilterType.innerHTML = `<option value="">...</option>`;
 
@@ -199,8 +200,6 @@ async function loadPokemonFilterResult(contentPokemonList) {
     for (let k = 1; k < pageNumberMax; k++) {
         const pokemons = await returnJSON(currentPage);
         currentPage = pokemons['next'];
-
-        console.log(k);
 
         await showFromPokemonName(contentPokemonList, pokemons, searchPokemonName, searchPokemonType)
     }
@@ -333,7 +332,7 @@ async function showPageInput() {
     setStylePageNumber('black');
     let currentPageNumber = document.getElementById('pageNavigationPageNumber').value;
 
-    if (currentPageNumber <= pageNumberMax) {
+    if (currentPageNumber > 0 && currentPageNumber <= pageNumberMax) {
         resetPage();
 
         for (let i = 1; i < currentPageNumber; i++) {
@@ -345,6 +344,7 @@ async function showPageInput() {
         renderPokemonList();
     } else {
         document.getElementById('pageNavigationPageNumber').value = pageNumber;
+        document.getElementById('pageNavigationPageNumber').blur();
         setStylePageNumber('red');
     }
 }

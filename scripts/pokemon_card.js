@@ -16,14 +16,13 @@ function renderPokemonCard(i) {
     renderPokemonTypesList(pokemonDataLoading[i]['type'],
         'pokemonCardTypes', 'pokemonCardTypesText');
 
-    includeHTML()
     createPokemonCardPageAbout(pokemonDataLoading[i]['pokedex_number']);
     setTimeout(openPokemonCard, 150);
 }
 
 
 function openPokemonCard() {
-    document.getElementById('panel').classList.add('d-none');
+/*     document.getElementById('panel').classList.add('d-none'); */
     document.getElementById('pokemonCardContent').classList.remove('d-none');
 }
 
@@ -40,23 +39,20 @@ function closePokemonCard() {
 /* ------------------------- */
 
 async function createPokemonCardPageAbout(pokedexNumber) {
+    showOrHidePage('loadingScreen', 'remove');
+
     let pokemonCardInfoContent = document.getElementById('pokemonCardInfo');
     pokemonCardInfoContent.innerHTML = '';
     const [pokemon, pokemonSpecies] = await returnPokemonAndPokemonSpecies(pokedexNumber);
-    const genus = returnPokemonGenus(pokemonSpecies['genera']);
+    const genus = returnEnglishName(pokemonSpecies['genera'], 'genus');
     const height = pokemon['height'];
     const weight = pokemon['weight'];
     const abilities = pokemon['abilities'];
     const eggGroups = returnPokemonEggGroupsAsArray(pokemonSpecies['egg_groups']);
 
     pokemonCardInfoContent.innerHTML = getHTMLPokemonCardPageAbout(genus, height, weight, abilities, eggGroups);
-}
 
-
-function returnPokemonGenus(genera) {
-    let generaEn = genera.find(data => data['language']['name'] === 'en');
-
-    return genus = returnFirstLetterToUpperCase(generaEn['genus']);
+    showOrHidePage('loadingScreen', 'add');
 }
 
 
@@ -119,6 +115,8 @@ function returnPokemonEggGroupsAsArray(eggGroups) {
 /* ------------------------------ */
 
 async function createPokemonCardPageBaseStats(pokedexNumber) {
+    showOrHidePage('loadingScreen', 'remove');
+
     let pokemonCardInfoContent = document.getElementById('pokemonCardInfo');
     pokemonCardInfoContent.innerHTML = '';
     let pokemonCardPageBaseStats = document.createElement('table');
@@ -126,32 +124,41 @@ async function createPokemonCardPageBaseStats(pokedexNumber) {
     const pokemonStats = pokemon['stats'];
     let resultProgress = 0;
     let pokemonStatsTotal = 0;
+    let progressColor = ['green', 'red'];
+    let progressColorIndex = 0;
 
-    addBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, pokemonStats, resultProgress, pokemonStatsTotal);
+    addBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, pokemonStats, resultProgress, pokemonStatsTotal, progressColor, progressColorIndex);
 }
 
 
-function addBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, pokemonStats, resultProgress, pokemonStatsTotal) {
+function addBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, pokemonStats, resultProgress, pokemonStatsTotal, progressColor, progressColorIndex) {
     for (let i = 0; i < pokemonStats.length; i++) {
         let pokemonBaseStat = pokemonStats[i]['base_stat'];
         let pokemonStatName = pokemonStats[i]['stat']['name'];
 
         pokemonStatName = returnFirstLetterToUpperCase(controleLengthOfBaseStatName(pokemonStatName));
 
-        resultProgress = pokemonCardBaseStatsProgress(pokemonBaseStat, 100);
+        resultProgress = pokemonCardBaseStatsProgress(pokemonBaseStat, 200);
         pokemonStatsTotal += +pokemonBaseStat;
-        pokemonCardPageBaseStats.innerHTML += getHTMLPokemonCardPageBaseStats(pokemonStatName, pokemonBaseStat, resultProgress);
+        pokemonCardPageBaseStats.innerHTML += getHTMLPokemonCardPageBaseStats(pokemonStatName, pokemonBaseStat, resultProgress, progressColor[progressColorIndex]);
+        progressColorIndex++;
+
+        if (progressColorIndex == progressColor.length) {
+            progressColorIndex = 0;
+        }
     }
 
-    addTotalfromBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, resultProgress, pokemonStatsTotal);
+    addTotalfromBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, resultProgress, pokemonStatsTotal, progressColor, progressColorIndex);
 }
 
 
-function addTotalfromBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, resultProgress, pokemonStatsTotal) {
-    resultProgress = pokemonCardBaseStatsProgress(pokemonStatsTotal, 600);
-    pokemonCardPageBaseStats.innerHTML += getHTMLPokemonCardPageBaseStats('Total', pokemonStatsTotal, resultProgress);
+function addTotalfromBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, resultProgress, pokemonStatsTotal, progressColor, progressColorIndex) {
+    resultProgress = pokemonCardBaseStatsProgress(pokemonStatsTotal, 1200);
+    pokemonCardPageBaseStats.innerHTML += getHTMLPokemonCardPageBaseStats('Total', pokemonStatsTotal, resultProgress, progressColor[progressColorIndex]);
 
     pokemonCardInfoContent.appendChild(pokemonCardPageBaseStats);
+
+    showOrHidePage('loadingScreen', 'add');
 }
 
 
@@ -182,38 +189,57 @@ function pokemonCardBaseStatsProgress(baseStat, procent) {
 
 
 
-/* ------------------------------ */
-/* pokemon card page 'base stats' */
-/* ------------------------------ */
+/* ----------------------------- */
+/* pokemon card page 'evolution' */
+/* ----------------------------- */
 
 async function createPokemonCardPageEvolution(pokedexNumber) {
+    showOrHidePage('loadingScreen', 'remove');
+
     let pokemonCardInfoContent = document.getElementById('pokemonCardInfo');
     pokemonCardInfoContent.innerHTML = '';
     const [pokemon, pokemonSpecies] = await returnPokemonAndPokemonSpecies(pokedexNumber);
     const pokemonEvolutionChange = await returnJSON(pokemonSpecies['evolution_chain']['url']);
 
-    findEvoltuionInChanges(pokemonCardInfoContent, pokemonEvolutionChange);
+    findEvoltuionInChain(pokemonCardInfoContent, pokemonEvolutionChange);
+
+    showOrHidePage('loadingScreen', 'add');
 }
 
 async function findEvoltuionInChain(pokemonCardInfoContent, pokemonEvolutionChange) {
-    let evolutionStep1 = pokemonEvolutionChange['chain']['species']['url'];
-    let extractPokemonNumber = 0;
-    extractPokemonNumber = extractNumberFromUrl(evolutionStep1);
-    let currentPokemon = await returnJSON(APIS[0] + extractPokemonNumber[extractPokemonNumber.length - 1]);
-    let currentPokemonName = currentPokemon['name'];
-    let currentPokemonImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
-    console.log(currentPokemonName);
-    console.log(currentPokemonImg);
+    let pokemonEvolutionChangeLevel = pokemonEvolutionChange['chain']['species']['url'];
 
-    for (let i = 0; i < pokemonEvolutionChange['chain']['evolves_to'].length; i++) {
-        const evolutionStep2 = pokemonEvolutionChange['chain']['evolves_to'][i]['species']['name'];
-        console.log(evolutionStep2);
+    await addEvolutionChainToPage(pokemonEvolutionChangeLevel, pokemonCardInfoContent, 'Level 1');
 
-        for (let j = 0; j < pokemonEvolutionChange['chain']['evolves_to'][i]['evolves_to'].length; j++) {
-            const evolutionStep3 = pokemonEvolutionChange['chain']['evolves_to'][i]['evolves_to'][j]['species']['name'];
-            console.log(evolutionStep3);
+    pokemonEvolutionChangeLevel = pokemonEvolutionChange['chain']['evolves_to'];
+    for (let i = 0; i < pokemonEvolutionChangeLevel.length; i++) {
+        let pokemonEvolutionChangeLevelIndex = pokemonEvolutionChangeLevel[i]['species']['url'];
+
+        await addEvolutionChainToPage(pokemonEvolutionChangeLevelIndex, pokemonCardInfoContent, 'Level 2');
+
+        let pokemonEvolutionChangeLevelSub = pokemonEvolutionChange['chain']['evolves_to'][i]['evolves_to'];
+        for (let j = 0; j < pokemonEvolutionChangeLevelSub.length; j++) {
+            pokemonEvolutionChangeLevelIndex = pokemonEvolutionChangeLevelSub[j]['species']['url'];
+
+            await addEvolutionChainToPage(pokemonEvolutionChangeLevelIndex, pokemonCardInfoContent, 'Level 3');
         }
     }
+}
+
+
+async function addEvolutionChainToPage(pokemonEvolutionChangeLevel, pokemonCardInfoContent, level) {
+    const pokemonNummberLevel = returnPokemonNumberFromUrl(pokemonEvolutionChangeLevel);
+    const currentPokemon = await returnJSON(APIS[0] + pokemonNummberLevel[pokemonNummberLevel.length - 1]);
+
+    const [currentPokemonName, currentPokemonImg] = returnPokemonNameAndImg(currentPokemon);
+    pokemonCardInfoContent.innerHTML += getHTMLPokemonCardPageEvolution(currentPokemonName, `${level}`, currentPokemonImg);
+}
+
+
+function returnPokemonNumberFromUrl(url) {
+    const number = extractNumberFromUrl(url);
+
+    return number;
 }
 
 
@@ -222,16 +248,82 @@ function extractNumberFromUrl(url) {
 }
 
 
-function getHTMLPokemonCardPageEvolution() {
+function returnPokemonNameAndImg(currentPokemon) {
+    const name = returnFirstLetterToUpperCase(currentPokemon['name']);
+    const img = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+
+    return [name, img];
+}
+
+
+
+/* ------------------------- */
+/* pokemon card page 'moves' */
+/* ------------------------- */
+
+async function createPokemonCardPageMoves(pokedexNumber) {
+    showOrHidePage('loadingScreen', 'remove');
+
+    let pokemonCardInfoContent = document.getElementById('pokemonCardInfo');
+    pokemonCardInfoContent.innerHTML = '';
+    let pokemonCardPageMoves = document.createElement('table');
+    const [pokemon, pokemonSpecies] = await returnPokemonAndPokemonSpecies(pokedexNumber);
+    const pokemonMoves = pokemon['moves'];
+
+    pokemonCardPageMoves = await addMovesToPage(pokemonMoves, pokemonCardPageMoves);
+
+    pokemonCardInfoContent.appendChild(pokemonCardPageMoves);
+
+    showOrHidePage('loadingScreen', 'add');
+}
+
+
+async function addMovesToPage(pokemonMoves, pokemonCardPageMoves) {
+    let counterMoves = pokemonMoves.length
+
+    if (counterMoves > 12) {
+        counterMoves = 12;
+    }
+
+    for (let i = 0; i < counterMoves; i++) {
+        const pokemonMove = await returnJSON(pokemonMoves[i]['move']['url']);
+        let [moveName, movePower, moveType] = returnNameMoveType(pokemonMove);
+
+        if (movePower == null) {
+            movePower = 'pass.'
+        }
+
+        pokemonCardPageMoves.innerHTML += getHTMLPokemonCardPageMoves(moveName, movePower, moveType);
+    }
+
+    return pokemonCardPageMoves;
+}
+
+
+function returnNameMoveType(moveJSON) {
+    const moveName = returnFirstLetterToUpperCase(moveJSON['name']);
+    let movePower = moveJSON['power'];
+    const moveType = moveJSON['type']['name'];
+
+    return [moveName, movePower, moveType];
+}
+
+function getHTMLPokemonCardPageMovesHead() {
     return /*html*/`
-        <div class="pokemonCardInfoTextPageThree">
-            <div>
-                <h3 class="pokemonCardInfoTextPageThreeHeadline">Bulbasaur</h3>
-                <div class="pokemonCardInfoTextPageThreeSeparator"></div>
-                <span class="pokemonCardInfoTextPageThreeHeadlineSubText">Level 1</S></span>
-            </div>
-            <img id="pokemonCardInfoTextPokemonImg"
-                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png">
-        </div>
+        <tr>
+            <th class="pokemonCardInfoTextTableHeadlinePageFour"></th>
+            <th class="pokemonCardInfoTextTableHeadlinePageFour">Power</th>
+            <th class="pokemonCardInfoTextTableHeadlinePageFour">Type</th>
+        </tr>
+    `;
+}
+
+function getHTMLPokemonCardPageMoves(name, power, type) {
+    return /*html*/`
+        <tr>
+            <td class="pokemonCardInfoTextLeft">${name}</td>
+            <td class="pokemonCardInfoTextRight">${power}</td>
+            <td class="pokemonCardInfoTextRight">${type}</td>
+        </tr>
     `;
 }

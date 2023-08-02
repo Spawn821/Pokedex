@@ -18,7 +18,7 @@
     <script src="./scripts/html_templates.js"></script>
 </head>
 
-<body onload="init(); includeHTML()">
+<body onload="init()">
 
     <!-- loading screen -->
     <div class="d-none" id="loadingScreen"></div>
@@ -29,8 +29,6 @@
         <!-- headline -->
         <div class="headline">
             <h1>Pokedex</h1>
-            <!--             <div class="headlineBigLine"></div>
-            <div class="headlineSmallLine"></div> -->
         </div>
 
         <!-- main picture -->
@@ -109,12 +107,7 @@
                 <a class="pokemonCardNavLink" onclick="openPokemonCardPageEvolution()">Evolution</a>
                 <a class="pokemonCardNavLink" onclick="openPokemonCardPageMoves()">Moves</a>
             </nav>
-
             <div id="pokemonCardInfo">
-                <div class="pokemonCardInfo" w3-include-html="./pokemon_card_pages/pokemon_card_about.html" id="about"></div>
-                <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_base_stats.html" id="baseStats"></div>
-                <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_evolution.html" id="evolution"></div>
-                <div class="pokemonCardInfo d-none" w3-include-html="./pokemon_card_pages/pokemon_card_moves.html" id="moves"></div>
             </div>
         </div>
     </div>
