@@ -47,7 +47,7 @@ function returnFirstLetterToUpperCase(str) {
         arr = str.split('-');
     } else if (str.includes('. ')) {
         arr = str.split('. ');
-    }else {
+    } else {
         arr = str.split(' ');
     }
 

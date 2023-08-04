@@ -2,6 +2,7 @@ body {
     font-family: 'Open Sans';
     margin: 0;
     display: flex;
+    justify-content: center;
 }
 
 
@@ -40,11 +41,9 @@ input {
 
 
 /* panel */
-.panel {
+#panel {
     min-height: 100vh;
     width: 100%;
-    margin: 8px;
-    margin-right: 320px;
     position: relative;
 }
 
@@ -170,7 +169,6 @@ h1 {
 }
 
 
-
 /* pokemon list */
 #pokemonList {
     display: flex;
@@ -246,22 +244,28 @@ h1 {
 
 
 /* page navigation */
-.pageNavigation {
+#pageNavigation {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     margin: 40px 8px;
-    gap: 150px;
+    gap: 16px;
 }
 
-@media(max-width: 1000px) {
-    .pageNavigation {
+.pageNavigationArrowArea {
+    display: flex;
+    gap: 300px;
+}
+
+@media(max-width: 450px) {
+    .pageNavigationArrowArea {
+        width: 100%;
         display: flex;
         justify-content: space-between;
-        margin: 40px 8px;
-        width: unset;
         gap: unset;
     }
 }
+
 
 .pageNavigationArrow {
     display: flex;
@@ -284,6 +288,7 @@ h1 {
     padding-left: 12px;
     padding-right: 12px;
     border-radius: 32px;
+    padding: 8px;
 }
 
 .pageNavigationPageNumberSuffix {

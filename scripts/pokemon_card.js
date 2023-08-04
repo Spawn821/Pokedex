@@ -22,13 +22,30 @@ function renderPokemonCard(i) {
 
 
 function openPokemonCard() {
-/*     document.getElementById('panel').classList.add('d-none'); */
-    document.getElementById('pokemonCardContent').classList.remove('d-none');
+    let windowWidth = window.matchMedia('(min-width: 700px)');
+
+    if (windowWidth.matches) {
+        document.getElementById('pokemonCardContent').classList.remove('d-none');
+    } else {
+        document.getElementById('panel').classList.add('d-none');
+        document.getElementById('pokemonCardContent').classList.remove('d-none');
+    }
 }
+
+window.addEventListener('resize', () => {
+    let mediaQuery = window.matchMedia('(min-width: 700px)');
+    console.log('läuft');
+    if (mediaQuery.matches || document.getElementById('pokemonCardContent').classList.contains('d-none')) {
+        document.getElementById('panel').classList.remove('d-none');
+    } else {
+        document.getElementById('panel').classList.add('d-none');
+    }
+});
 
 
 function closePokemonCard() {
     document.getElementById('panel').classList.remove('d-none');
+    document.getElementById('panel').style = `margin-right: 0`;
     document.getElementById('pokemonCardContent').classList.add('d-none');
 }
 

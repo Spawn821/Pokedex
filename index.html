@@ -24,7 +24,7 @@
     <div class="d-none" id="loadingScreen"></div>
 
     <!-- panel -->
-    <div class="panel" onclick="closeMenuFilterPokemon()" id="panel">
+    <div onclick="closeMenuFilterPokemon()" id="panel">
 
         <!-- headline -->
         <div class="headline">
@@ -69,47 +69,23 @@
         </div>
 
         <!-- page navigation -->
-        <div class="pageNavigation" id="pageNavigation">
-            <span class="pageNavigationArrow" onclick="lastPage()">&#60</span>
+        <div id="pageNavigation">
+            <div class="pageNavigationArrowArea">
+                <span class="pageNavigationArrow" onclick="lastPage()">&#60</span>
+                <span class="pageNavigationArrow" onclick="nextPage()">&#62</span>
+            </div>
             <div class="pageNavigationPageNumberArea">
                 <span class="pageNavigationPageNumberSuffix">Page</span>
                 <input class="pageNavigationPageNumber" type="number" value="1" min="1" max="40"
                     onchange="showPageInput()" id="pageNavigationPageNumber">
                 <span class="pageNavigationPageNumberSuffix">/ 10</span>
             </div>
-            <span class="pageNavigationArrow" onclick="nextPage()">&#62</span>
         </div>
 
     </div>
 
     <!-- pokemon card -->
     <div class="d-none" id="pokemonCardContent">
-        <div class="min-h" id="pokemonCard">
-            <span class="pokemonCardCloseSign" onclick="closePokemonCard()">&#8592</span>
-            <div class="pokemonCardMainInformation">
-                <div class="pokemonCardMainInformationLeftArea">
-                    <span class="pokemonCardHeadline">Bulbasaur</span>
-                    <div class="pokemonCardTypes" id="pokemonCardTypes">
-                        <span class="pokemonCardTypesText">Grass</span>
-                        <span class="pokemonCardTypesText">Poison</span>
-                    </div>
-                </div>
-                <span>#001</span>
-            </div>
-            <img class="pokemonCardPokeballImg" src="./img/pokeball.png" alt="">
-        </div>
-        <div class="min-h" id="pokemonCardText">
-            <img id="pokemonCardPokemonImg"
-                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png">
-            <nav class="pokemonCardNav">
-                <a class="pokemonCardNavLink" onclick="openPokemonCardPageAbout()">About</a>
-                <a class="pokemonCardNavLink" onclick="openPokemonCardPageBaseStats()">Base Stats</a>
-                <a class="pokemonCardNavLink" onclick="openPokemonCardPageEvolution()">Evolution</a>
-                <a class="pokemonCardNavLink" onclick="openPokemonCardPageMoves()">Moves</a>
-            </nav>
-            <div id="pokemonCardInfo">
-            </div>
-        </div>
     </div>
 
 </body>
