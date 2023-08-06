@@ -29,25 +29,43 @@ function openPokemonCard() {
     } else {
         document.getElementById('panel').classList.add('d-none');
         document.getElementById('pokemonCardContent').classList.remove('d-none');
+        document.getElementById('pokemonCardPokedexImgLeft').classList.remove('d-none');
+        document.getElementById('pokemonCardPokedexImgRight').classList.remove('d-none');
     }
 }
-
-window.addEventListener('resize', () => {
-    let mediaQuery = window.matchMedia('(min-width: 700px)');
-    console.log('läuft');
-    if (mediaQuery.matches || document.getElementById('pokemonCardContent').classList.contains('d-none')) {
-        document.getElementById('panel').classList.remove('d-none');
-    } else {
-        document.getElementById('panel').classList.add('d-none');
-    }
-});
 
 
 function closePokemonCard() {
     document.getElementById('panel').classList.remove('d-none');
     document.getElementById('panel').style = `margin-right: 0`;
     document.getElementById('pokemonCardContent').classList.add('d-none');
+    document.getElementById('pokemonCardPokedexImgLeft').classList.add('d-none');
+    document.getElementById('pokemonCardPokedexImgRight').classList.add('d-none');
 }
+
+
+/* if window size changes */
+window.addEventListener('resize', () => {
+    let mediaQuery = window.matchMedia('(min-width: 700px)');
+    console.log('läuft');
+    if (mediaQuery.matches || document.getElementById('pokemonCardContent').classList.contains('d-none')) {
+        document.getElementById('panel').classList.remove('d-none');
+        document.getElementById('pokemonCardPokedexImgLeft').classList.add('d-none');
+        document.getElementById('pokemonCardPokedexImgRight').classList.add('d-none');
+    } else {
+        document.getElementById('panel').classList.add('d-none');
+        document.getElementById('pokemonCardPokedexImgLeft').classList.remove('d-none');
+        document.getElementById('pokemonCardPokedexImgRight').classList.remove('d-none');
+    }
+});
+
+window.addEventListener('scroll', () => {
+    console.log(window.scrollY);
+
+    if (window.screenY > 200) {
+        document.getElementById('pokemonCardText').style = 'height: 100vh';
+    }
+});
 
 
 

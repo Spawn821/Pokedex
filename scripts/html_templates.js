@@ -77,10 +77,10 @@ function getHTMLPokemonCard(pokemonName, pokedexNumber, pokedexNumberClean, poke
                 </div>
                 <span>${pokedexNumber}</span>
             </div>
+            <img id="pokemonCardPokemonImg" src=${pokemonImg}>
             <img class="pokemonCardPokeballImg" src="./img/pokeball.png" alt="">
         </div>
         <div class="min-h" id="pokemonCardText">
-            <img id="pokemonCardPokemonImg" src=${pokemonImg}>
             <nav class="pokemonCardNav">
                 <a class="pokemonCardNavLink" onclick="createPokemonCardPageAbout(${pokedexNumberClean})">About</a>
                 <a class="pokemonCardNavLink" onclick="createPokemonCardPageBaseStats(${pokedexNumberClean})">Base Stats</a>

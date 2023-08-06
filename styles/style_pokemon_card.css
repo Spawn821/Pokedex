@@ -1,6 +1,6 @@
 /* default settings */
 .min-h {
-    height: 50vh;
+    min-height: 50vh;
 }
 
 /* pokemon card */
@@ -9,6 +9,44 @@
     top: 0;
     right: 0;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media(max-width: 400px) {
+    #pokemonCardContent {
+        flex-grow: 1;
+        overflow-x: hidden;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+#pokemonCardPokedexImgLeft {
+    height: 100vh;
+    object-fit: cover;
+    object-position: left;
+    overflow-x: hidden;
+}
+
+@media(max-width: 400px) {
+    #pokemonCardPokedexImgLeft {
+        display: none;
+    }
+}
+
+#pokemonCardPokedexImgRight {
+    height: 100vh;
+    object-fit: cover;
+    object-position: right;
+    overflow-x: hidden;
+}
+
+@media(max-width: 400px) {
+    #pokemonCardPokedexImgRight {
+        display: none;
+    }
 }
 
 #pokemonCard {
@@ -23,6 +61,27 @@
     padding-left: 16px;
     padding-right: 16px;
     width: 288px;
+}
+
+@media(max-width: 400px) {
+    #pokemonCard {
+        width: 100%;
+    }
+}
+
+#pokemonCardPokemonImg {
+    height: 240px;
+    z-index: 1;
+    object-fit: contain;
+    position: absolute;
+    left: 48px;
+    bottom: -16px;
+}
+
+@media(max-width: 400px) {
+    #pokemonCardPokemonImg {
+        position: unset;
+    }
 }
 
 .pokemonCardCloseSign {
@@ -89,18 +148,25 @@
     padding-right: 16px;
     font-size: 14px;
     border: 1px solid lightgrey;
+    width: 288px;
+    overflow-y: scroll;
 }
 
-#pokemonCardPokemonImg {
-    height: 240px;
-    width: auto;
-    margin-top: -200px;
+#pokemonCardText::-webkit-scrollbar {
+    display: none;
+}
+
+@media(max-width: 400px) {
+    #pokemonCardText {
+        width: 100%;
+    }
 }
 
 .pokemonCardNav {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    margin-top: 32px;
 }
 
 .pokemonCardNavLink {
