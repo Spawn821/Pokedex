@@ -168,3 +168,14 @@ function getHTMLPokemonCardPageEvolution(pokemonName, level, pokemonImg) {
         </div>
     `;
 }
+
+
+function getHTMLPokemonCardPageMoves(name, power, type) {
+    return /*html*/`
+        <tr>
+            <td class="pokemonCardInfoTextLeft">${name}</td>
+            <td class="pokemonCardInfoTextRight">${power}</td>
+            <td class="pokemonCardInfoTextRight">${type}</td>
+        </tr>
+    `;
+}

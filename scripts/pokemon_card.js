@@ -151,6 +151,7 @@ function returnPokemonEggGroupsAsArray(eggGroups) {
 
 async function createPokemonCardPageBaseStats(pokedexNumber) {
     showOrHidePage('loadingScreen', 'remove');
+    resetLoadingBar();
 
     let pokemonCardInfoContent = document.getElementById('pokemonCardInfo');
     pokemonCardInfoContent.innerHTML = '';
@@ -181,6 +182,8 @@ function addBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, pokemonS
         if (progressColorIndex == progressColor.length) {
             progressColorIndex = 0;
         }
+
+        fillLaodingBar(i, pokemonStats.length);
     }
 
     addTotalfromBaseStats(pokemonCardInfoContent, pokemonCardPageBaseStats, resultProgress, pokemonStatsTotal, progressColor, progressColorIndex);
@@ -230,6 +233,7 @@ function pokemonCardBaseStatsProgress(baseStat, procent) {
 
 async function createPokemonCardPageEvolution(pokedexNumber) {
     showOrHidePage('loadingScreen', 'remove');
+    resetLoadingBar();
 
     let pokemonCardInfoContent = document.getElementById('pokemonCardInfo');
     pokemonCardInfoContent.innerHTML = '';
@@ -258,6 +262,8 @@ async function findEvoltuionInChain(pokemonCardInfoContent, pokemonEvolutionChan
 
             await addEvolutionChainToPage(pokemonEvolutionChangeLevelIndex, pokemonCardInfoContent, 'Level 3');
         }
+
+        fillLaodingBar(i, pokemonEvolutionChangeLevel.length);
     }
 }
 
@@ -298,6 +304,7 @@ function returnPokemonNameAndImg(currentPokemon) {
 
 async function createPokemonCardPageMoves(pokedexNumber) {
     showOrHidePage('loadingScreen', 'remove');
+    resetLoadingBar();
 
     let pokemonCardInfoContent = document.getElementById('pokemonCardInfo');
     pokemonCardInfoContent.innerHTML = '';
@@ -329,6 +336,8 @@ async function addMovesToPage(pokemonMoves, pokemonCardPageMoves) {
         }
 
         pokemonCardPageMoves.innerHTML += getHTMLPokemonCardPageMoves(moveName, movePower, moveType);
+
+        fillLaodingBar(i, counterMoves);
     }
 
     return pokemonCardPageMoves;
@@ -341,24 +350,4 @@ function returnNameMoveType(moveJSON) {
     const moveType = moveJSON['type']['name'];
 
     return [moveName, movePower, moveType];
-}
-
-function getHTMLPokemonCardPageMovesHead() {
-    return /*html*/`
-        <tr>
-            <th class="pokemonCardInfoTextTableHeadlinePageFour"></th>
-            <th class="pokemonCardInfoTextTableHeadlinePageFour">Power</th>
-            <th class="pokemonCardInfoTextTableHeadlinePageFour">Type</th>
-        </tr>
-    `;
-}
-
-function getHTMLPokemonCardPageMoves(name, power, type) {
-    return /*html*/`
-        <tr>
-            <td class="pokemonCardInfoTextLeft">${name}</td>
-            <td class="pokemonCardInfoTextRight">${power}</td>
-            <td class="pokemonCardInfoTextRight">${type}</td>
-        </tr>
-    `;
 }

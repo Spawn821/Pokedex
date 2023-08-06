@@ -66,7 +66,6 @@ let pokemonIndexNumber;
 /* ---------------------------------------------------- */
 
 function init() {
-    infoAPIContent();
     resetPage();
     renderPokemonList();
     renderPokemonFilterType();
@@ -79,6 +78,7 @@ function init() {
 
 async function renderPokemonList() {
     showOrHidePage('loadingScreen', 'remove');
+    resetLoadingBar();
     clearPokemonDataInArray();
 
     const pokemons = await returnJSON(currentPage);
@@ -103,6 +103,8 @@ async function showOnListPokemon(pokemons, contentPokemonList) {
 
         renderPokemonTypesList(pokemonDataLoading[i]['type'],
         `pokemonTypeList${i}`, 'pokemonSmallCardSubheadline');
+
+        fillLaodingBar(i, pokemons['results'].length);
     }
 }
 
@@ -179,6 +181,7 @@ function renderPokemonListWithFilter() {
     hidePageNavigation();
     resetPage();
     showOrHidePage('loadingScreen', 'remove');
+    resetLoadingBar();
     signLoadPokemonFilterResult();
     clearPokemonDataInArray();
 
@@ -202,6 +205,8 @@ async function loadPokemonFilterResult(contentPokemonList) {
         currentPage = pokemons['next'];
 
         await showFromPokemonName(contentPokemonList, pokemons, searchPokemonName, searchPokemonType)
+
+        fillLaodingBar(k, pageNumberMax);
     }
 
     signCheckPokemonFilterResult(contentPokemonList);

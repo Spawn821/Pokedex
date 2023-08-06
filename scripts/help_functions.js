@@ -2,19 +2,6 @@
 /* help functions */
 /* -------------- */
 
-async function infoAPIContent() {
-    let pokemon = await returnJSON('https://pokeapi.co/api/v2/pokemon/18/');
-    let pokemonSpecies = await returnJSON('https://pokeapi.co/api/v2/pokemon-species/1/');
-    let pokemonEvolution = await returnJSON('https://pokeapi.co/api/v2/evolution-chain/1/');
-    let pokemonMove = await returnJSON('https://pokeapi.co/api/v2/move/28/');
-
-    console.log(pokemon);
-    console.log(pokemonSpecies);
-    console.log(pokemonEvolution);
-    console.log(pokemonMove);
-}
-
-
 function notToClose(event) {
     event.stopPropagation();
 }
@@ -128,4 +115,22 @@ function returnEnglishName(arr, categorie) {
     let findEn = arr.find(data => data['language']['name'] === 'en');
 
     return english = returnFirstLetterToUpperCase(findEn[`${categorie}`]);
+}
+
+
+function fillLaodingBar(currentNumber, maxNumber) {
+    let loadingBar = document.getElementById('loadingBarFill');
+    let loadingBarText = document.getElementById('loadingBarFillText');
+    let procentStep = currentNumber * 100 / maxNumber;
+
+    loadingBar.style = `width: ${procentStep}%`;
+    loadingBarText.innerHTML = `${procentStep.toFixed(0)}%`;
+}
+
+function resetLoadingBar() {
+    let loadingBar = document.getElementById('loadingBarFill');
+    let loadingBarText = document.getElementById('loadingBarFillText');
+
+    loadingBar.style = `width: 0%`;
+    loadingBarText.innerHTML = `0%`;
 }

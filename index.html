@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex</title>
 
+    <link rel="icon" type="image/png" href="./img/pokeball.png">
+
     <!-- import styles -->
     <link rel="stylesheet" href="./styles/style_pokemon_list.css">
     <link rel="stylesheet" href="./styles/style_pokemon_card.css">
@@ -21,7 +23,15 @@
 <body onload="init()">
 
     <!-- loading screen -->
-    <div class="d-none" id="loadingScreen"></div>
+    <div class="" id="loadingScreen">
+        <div class="loadingBar">
+            <div id="loadingBarFill">
+                <img class="loadingBarImg" src="./img/pokeball.png">
+                <span id="loadingBarFillText">100%</span>
+            </div>
+
+        </div>
+    </div>
 
     <!-- panel -->
     <div onclick="closeMenuFilterPokemon()" id="panel">
